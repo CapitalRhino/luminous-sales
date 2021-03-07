@@ -10,6 +10,8 @@ namespace Models.Models.Interfaces
         User User { get; set; }
         ICollection<Product> ProductsADeal { get; set;}
         double Amount { get; set; }
-        public byte[] Time { get; set; }
+
+        byte[] GetTime();
+        void SetTime(byte[] value);
     }
 }

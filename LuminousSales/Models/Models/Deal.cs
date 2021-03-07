@@ -9,7 +9,17 @@ namespace Models.Models
         public User User { get; set; }
         public ICollection<Product> ProductsADeal { get; set; }
         public double Amount { get; set; }
-        [Timestamp]
-        public byte[] Time { get; set; }
+
+        private byte[] time;
+
+        public byte[] GetTime()
+        {
+            return time;
+        }
+
+        public void SetTime(byte[] value)
+        {
+            time = value;
+        }
     }
 }
