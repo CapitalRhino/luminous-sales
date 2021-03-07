@@ -5,12 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LuminousSales.Data
 {
-    public class RolesToPermissionContext:DbContext
+   public class StockContext:DbContext
     {
-        public RolesToPermissionContext():base()
+        public StockContext()
         {
 
         }
-       
     }
 }
