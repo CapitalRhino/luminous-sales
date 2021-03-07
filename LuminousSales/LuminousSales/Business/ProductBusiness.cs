@@ -27,7 +27,7 @@ namespace LuminousSales.Business
             }
         }
 
-        public void Add(Product product)
+        public void Buy(Product product)
         {
             using (productContext = new ProductContext())
             {
@@ -49,7 +49,7 @@ namespace LuminousSales.Business
             }
         }
 
-        public void Delete(int id)
+        public void Sell(int id)
         {
             using (productContext = new ProductContext())
             {
