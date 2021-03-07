@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Text;
 using LuminousSales.Data.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace LuminousSales.Data
 {
