@@ -9,6 +9,8 @@ namespace LuminousSales.Data
         {
 
         }
-        
+        public DbSet<Role> Roles { get; set; }
+
+       
     }
 }
