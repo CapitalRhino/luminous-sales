@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Text;
-using LuminousSales.Data.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+
 
 namespace LuminousSales.Data
 {
-   public class ProductContext : DbContext
+    public class ProductContext : DbContext
     {
-        public ProductContext():base("name = ProductContext")
+        public ProductContext():base()
         {
 
         }
-        public DbSet<Product> Products { get; set; }
+    
     }
 }
