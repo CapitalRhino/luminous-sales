@@ -38,7 +38,28 @@ namespace LuminousSales.Business
 
         public void Update(Product product)
         {
-            
+            using (productContext = new ProductContext())
+            {
+                var item = productContext.Products.Find(product.Id);
+                if (item != null)
+                {
+                    productContext.Entry(item).CurrentValues.SetValues(product);
+                    productContext.SaveChanges();
+                }
+            }
+        }
+
+        public void Delete(int id)
+        {
+            using (productContext = new ProductContext())
+            {
+                var product = productContext.Products.Find(id);
+                if (product != null)
+                {
+                    productContext.Products.Remove(product);
+                    productContext.SaveChanges();
+                }
+            }
         }
 
     }
