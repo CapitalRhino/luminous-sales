@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Models.Models
 {
-    class Stock : IBaseSalesProperties
+    public class Stock : IBaseSalesProperties
     {
         public User User { get; set; }
         public ICollection<Product> ProductsADeal { get; set; }

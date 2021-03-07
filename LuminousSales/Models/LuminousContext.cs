@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Models
 {
-    class LuminousContext : DbContext
+   public class LuminousContext : DbContext
     {
         public LuminousContext(): base("name=LuminousContext")
         {
