@@ -6,6 +6,7 @@ namespace LuminousSales.Business
 {
    public class DealsBusiness
     {
+        private DealContext dealContext;
 
     }
 }

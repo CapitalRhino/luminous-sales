@@ -6,6 +6,6 @@ namespace LuminousSales.Business
 {
    public class UsersToRolesBusiness
     {
-
+        private UsersToRolesContext usersToRolesContext;
     }
 }

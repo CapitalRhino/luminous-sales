@@ -6,5 +6,7 @@ namespace LuminousSales.Business
 {
     public class RolesToPermissionBusiness
     {
+        private RolesToPermissionContext rolesToPermissionContext;
+
     }
 }
