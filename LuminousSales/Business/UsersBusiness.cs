@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using LuminousSales.Data;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 
-namespace LuminousSales.Business
+namespace Business
 {
     public class UsersBusiness
     {

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using LuminousSales.Data;
 
-namespace LuminousSales.Business
+
+namespace Business
 {
     public class PermissionsBusiness
     {
         private PermissionContext permissionContext;
+
+        
     }
 }

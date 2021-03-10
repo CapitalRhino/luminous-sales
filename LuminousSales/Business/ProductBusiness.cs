@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Business.Businesses;
 using Models.Models;
 
-
-namespace Business.Businesses
+namespace Business
 {
     public class ProductBusiness
     {
