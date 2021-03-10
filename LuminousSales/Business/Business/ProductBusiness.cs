@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using LuminousSales.Data;
-using LuminousSales.Data.Model;
 
-namespace LuminousSales.Business
+
+namespace Business.Business
 {
     public class ProductBusiness
     {
