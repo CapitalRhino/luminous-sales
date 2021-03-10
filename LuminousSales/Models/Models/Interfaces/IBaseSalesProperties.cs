@@ -8,10 +8,6 @@ namespace Models.Models.Interfaces
     interface IBaseSalesProperties
     {
         User User { get; set; }
-        ICollection<Product> ProductsADeal { get; set;}
         double Amount { get; set; }
-
-        byte[] GetTime();
-        void SetTime(byte[] value);
     }
 }
