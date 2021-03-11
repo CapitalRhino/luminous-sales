@@ -1,24 +1,17 @@
 ﻿using Models.Models.Interfaces;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Models
 {
     public class Deal : IBaseSalesProperties
     {
+        [Key]
+        public int Id { get; set; }
         public User User { get; set; }
-        public ICollection<Product> ProductsADeal { get; set; }
         public double Amount { get; set; }
-
-        private byte[] time;
-
-        public byte[] GetTime()
-        {
-            return time;
-        }
-
-        public void SetTime(byte[] value)
-        {
-            time = value;
-        }
+        [Timestamp]
+        public byte[] time;
     }
 }
