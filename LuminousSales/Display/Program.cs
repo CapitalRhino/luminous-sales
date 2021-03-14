@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LuminousSales.Business;
+using System;
 
 namespace Display
 {
@@ -6,7 +7,6 @@ namespace Display
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
         }
     }
 }

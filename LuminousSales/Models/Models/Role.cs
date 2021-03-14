@@ -1,13 +1,17 @@
-﻿using Models.Models.Interfaces;
+﻿using Data.Base;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Models.Models
 {
-    public class Role : IBaseProperties
+    public class Role : BaseUserManagmentEntity
     {
-        [Key]
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public Role() : base(){}
+        public Role(string Name, ICollection<Permission> Permissions)  : base(Name)
+        {
+            this.Permissions = Permissions;
+        }
+        [Required]
+        public virtual ICollection<Permission> Permissions { get; set; }
     }
 }

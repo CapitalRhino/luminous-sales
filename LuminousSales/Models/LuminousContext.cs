@@ -32,7 +32,18 @@ namespace Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>()
+                .HasIndex(user => new { user.Name, user.Password })
+                .IsUnique(true);
+            modelBuilder.Entity<Role>()
+                .HasIndex(role => new { role.Name })
+                .IsUnique(true);
+            modelBuilder.Entity<Permission>()
+                .HasIndex(permission => new { permission.Name })
+                .IsUnique(true);
+            modelBuilder.Entity<Product>()
+                .HasIndex(product => new { product.Name })
+                .IsUnique(true);
         }
     }
 }
