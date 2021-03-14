@@ -1,14 +1,17 @@
 ﻿using Models;
+using Models.Models;
+using System.Linq;
 
 namespace LuminousSales.Business
 {
     public class UsersController
     {
-        private LuminousContext userContext;
+
+        private LuminousContext contex;
 
         public UsersController()
         {
-            this.userContext = new LuminousContext();
+            this.contex = new LuminousContext();
         }
     }
 }

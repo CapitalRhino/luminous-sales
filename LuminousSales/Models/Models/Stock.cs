@@ -1,4 +1,4 @@
-﻿using Models.Models.Interfaces;
+﻿using Data.Base;
 using System;
 using System.Collections.Generic;
 
@@ -6,13 +6,9 @@ using System.Text;
 
 namespace Models.Models
 {
-    public class Stock : IBaseSalesProperties
+    public class Stock : BaseSales
     {
-        [Key]
-        public int Id { get; set; }
-        public User User { get; set; }
-        public double Amount { get; set; }
-        [Timestamp]
-        public byte[] time;
+        public Stock() : base(){}
+        public Stock(User User, ICollection<Product> Products) : base(User, Products){}
     }
 }

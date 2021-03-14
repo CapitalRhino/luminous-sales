@@ -10,7 +10,7 @@ using Models;
 namespace Data.Migrations
 {
     [DbContext(typeof(LuminousContext))]
-    [Migration("20210310234527_IntialMigration")]
+    [Migration("20210314081427_IntialMigration")]
     partial class IntialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,18 +28,16 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
+                    b.Property<byte[]>("Time")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -54,9 +52,18 @@ namespace Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Permission");
                 });
@@ -71,13 +78,27 @@ namespace Data.Migrations
                     b.Property<double>("AmountInStock")
                         .HasColumnType("float");
 
+                    b.Property<int?>("DealId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<int?>("StockId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DealId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("StockId");
 
                     b.ToTable("Product");
                 });
@@ -90,14 +111,13 @@ namespace Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PermissionId")
-                        .HasColumnType("int");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PermissionId");
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Role");
                 });
@@ -109,18 +129,16 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
+                    b.Property<byte[]>("Time")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -135,55 +153,69 @@ namespace Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Passcode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("UsersRolesId")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsersRolesId");
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("Name", "Password")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });
 
             modelBuilder.Entity("Models.Models.Deal", b =>
                 {
-                    b.HasOne("Models.Models.Product", null)
-                        .WithMany("Deals")
-                        .HasForeignKey("ProductId");
-
                     b.HasOne("Models.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Models.Models.Role", b =>
+            modelBuilder.Entity("Models.Models.Permission", b =>
                 {
-                    b.HasOne("Models.Models.Permission", null)
-                        .WithMany("Role")
-                        .HasForeignKey("PermissionId");
+                    b.HasOne("Models.Models.Role", null)
+                        .WithMany("Permissions")
+                        .HasForeignKey("RoleId");
+                });
+
+            modelBuilder.Entity("Models.Models.Product", b =>
+                {
+                    b.HasOne("Models.Models.Deal", null)
+                        .WithMany("Products")
+                        .HasForeignKey("DealId");
+
+                    b.HasOne("Models.Models.Stock", null)
+                        .WithMany("Products")
+                        .HasForeignKey("StockId");
                 });
 
             modelBuilder.Entity("Models.Models.Stock", b =>
                 {
-                    b.HasOne("Models.Models.Product", null)
-                        .WithMany("Stocks")
-                        .HasForeignKey("ProductId");
-
                     b.HasOne("Models.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Models.Models.User", b =>
                 {
-                    b.HasOne("Models.Models.Role", "UsersRoles")
+                    b.HasOne("Models.Models.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("UsersRolesId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
