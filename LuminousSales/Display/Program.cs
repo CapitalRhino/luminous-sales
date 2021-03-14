@@ -1,5 +1,5 @@
-﻿using LuminousSales.Business;
-using System;
+﻿using System;
+using Business.Business.UserManagment;
 
 namespace Display
 {
@@ -7,6 +7,7 @@ namespace Display
     {
         static void Main(string[] args)
         {
+            var InitialCreation = new CreateInitialUser();
         }
     }
 }
