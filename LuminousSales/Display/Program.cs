@@ -1,5 +1,5 @@
 ﻿using System;
-using Business.Business.UserManagment;
+using System.ComponentModel.DataAnnotations;
 
 namespace Display
 {
@@ -7,7 +7,11 @@ namespace Display
     {
         static void Main(string[] args)
         {
-            var InitialCreation = new CreateInitialUser("Admin", "Admin", "pass123");
+            var val = new Business.Business.UserManagment.Validator();
+            if ()
+            {
+
+            }
         }
     }
 }
