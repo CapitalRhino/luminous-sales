@@ -9,13 +9,25 @@ namespace Business.Business.UserManagment
     public class CreateInitialUser
     {
         private LuminousContext context;
+        private string RoleName;
+        private string Username;
+        private string Password;
+        private UserController userctl;
+        public CreateInitialUser(string RoleName, string Username, string Password)
+        {
+            userctl = new UserController();
+            this.RoleName = RoleName;
+            this.Username = Username;
+            this.Password = Password;
+        }
         public void CreatePermissions()
         {
+            
             using (context = new LuminousContext())
             {
                 var admin = new Permission("Admin");
-                var roleChanger = new Permission("Role Changer");
-                var userCreation = new Permission("User Creation");
+                var roleChanger = new Permission("Role Creator");
+                var userCreation = new Permission("User Creator");
                 var report = new Permission("Report");
                 var stock = new Permission("Stock");
                 var sell = new Permission("Sell");
@@ -33,22 +45,20 @@ namespace Business.Business.UserManagment
             }
         }
 
-        public void CreateFirstRole(string Name, ICollection<Permission> Permissions)
+        public void CreateFirstRole()
         {
             using (context = new LuminousContext())
             {
-                var firstRole = new Role(Name, Permissions);
-                context.Role.Add(firstRole);
-                context.SaveChanges();
+                var AdminRole = context.Permission.Where(p => p.Name == "Admin").FirstOrDefault();
+                userctl.CreateRole(this.RoleName , new List<Permission> { AdminRole });
             }
         }
-        public void CreateFirstUser(string Name, string Password, Role Role)
+        public void CreateFirstUser()
         {
             using (context = new LuminousContext())
             {
-                var firstUser = new User(Name, Password, Role);
-                context.User.Add(firstUser);
-                context.SaveChanges();
+                var roleToAttach = context.Role.Where(r => r.Name == this.RoleName).FirstOrDefault();
+                userctl.CreateUser(this.Username, this.Password, roleToAttach);
             }
         }
 

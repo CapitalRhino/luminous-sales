@@ -7,7 +7,7 @@ namespace Display
     {
         static void Main(string[] args)
         {
-            var InitialCreation = new CreateInitialUser();
+            var InitialCreation = new CreateInitialUser("Admin", "Admin", "pass123");
         }
     }
 }
