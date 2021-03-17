@@ -3,10 +3,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class IntialMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Permission",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permission", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Role",
                 columns: table => new
@@ -21,23 +34,27 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Permission",
+                name: "RolePermission",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false),
-                    RoleId = table.Column<int>(nullable: true)
+                    RoleId = table.Column<int>(nullable: false),
+                    PermisionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Permission", x => x.Id);
+                    table.PrimaryKey("PK_RolePermission", x => new { x.RoleId, x.PermisionId });
                     table.ForeignKey(
-                        name: "FK_Permission_Role_RoleId",
+                        name: "FK_RolePermission_Permission_PermisionId",
+                        column: x => x.PermisionId,
+                        principalTable: "Permission",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RolePermission_Role_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Role",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -142,11 +159,6 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Permission_RoleId",
-                table: "Permission",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Product_DealId",
                 table: "Product",
                 column: "DealId");
@@ -169,6 +181,11 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_RolePermission_PermisionId",
+                table: "RolePermission",
+                column: "PermisionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Stock_UserId",
                 table: "Stock",
                 column: "UserId");
@@ -188,16 +205,19 @@ namespace Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Permission");
+                name: "Product");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "RolePermission");
 
             migrationBuilder.DropTable(
                 name: "Deal");
 
             migrationBuilder.DropTable(
                 name: "Stock");
+
+            migrationBuilder.DropTable(
+                name: "Permission");
 
             migrationBuilder.DropTable(
                 name: "User");

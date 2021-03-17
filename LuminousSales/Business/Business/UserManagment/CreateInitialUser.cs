@@ -49,8 +49,8 @@ namespace Business.Business.UserManagment
         {
             using (context = new LuminousContext())
             {
-                var AdminRole = context.Permission.Where(p => p.Name == "Admin").FirstOrDefault();
-                userctl.CreateRole(this.RoleName , new List<Permission> { AdminRole });
+                var AdminPermission = context.Permission.FirstOrDefault(p => p.Name == "Admin");
+                userctl.CreateRole(this.RoleName , AdminPermission);
             }
         }
         public void CreateFirstUser()

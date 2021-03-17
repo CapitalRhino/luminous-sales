@@ -1,4 +1,5 @@
 ﻿using Data;
+using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Models.Models;
 
@@ -22,6 +23,7 @@ namespace Models
         public DbSet<Product> Product { get; set; }
         public DbSet<Deal> Deal { get; set; }
         public DbSet<Stock> Stock { get; set; }
+        public DbSet<RolePermission> RolePermission { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,6 +46,16 @@ namespace Models
             modelBuilder.Entity<Product>()
                 .HasIndex(product => new { product.Name })
                 .IsUnique(true);
+            modelBuilder.Entity<RolePermission>()
+                .HasKey(rp => new { rp.RoleId, rp.PermisionId });
+            modelBuilder.Entity<RolePermission>()
+                .HasOne(rp => rp.Roles)
+                .WithMany(rp => rp.Permissions)
+                .HasForeignKey(rp => rp.RoleId);
+            modelBuilder.Entity<RolePermission>()
+                .HasOne(rp => rp.Permission)
+                .WithMany(rp => rp.Role)
+                .HasForeignKey(rp => rp.PermisionId);
         }
     }
 }

@@ -19,6 +19,21 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Data.Models.RolePermission", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermisionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "PermisionId");
+
+                    b.HasIndex("PermisionId");
+
+                    b.ToTable("RolePermission");
+                });
+
             modelBuilder.Entity("Models.Models.Deal", b =>
                 {
                     b.Property<int>("Id")
@@ -53,15 +68,10 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Permission");
                 });
@@ -171,6 +181,21 @@ namespace Data.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("Data.Models.RolePermission", b =>
+                {
+                    b.HasOne("Models.Models.Permission", "Permission")
+                        .WithMany("Role")
+                        .HasForeignKey("PermisionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Models.Role", "Roles")
+                        .WithMany("Permissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Models.Models.Deal", b =>
                 {
                     b.HasOne("Models.Models.User", "User")
@@ -178,13 +203,6 @@ namespace Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Models.Models.Permission", b =>
-                {
-                    b.HasOne("Models.Models.Role", null)
-                        .WithMany("Permissions")
-                        .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("Models.Models.Product", b =>
