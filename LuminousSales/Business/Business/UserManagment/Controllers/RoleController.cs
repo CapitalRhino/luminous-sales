@@ -17,9 +17,17 @@ namespace Business.Business.UserManagment.Controllers
             this.context = new LuminousContext();
             this.currentUser = currentUser;
         }
+        public void CreateInitialRoles()
+        {
+            var Admin = new Role("Admin");
+            var Manager = new Role("Manager");
+            var Cashier = new Role("Cashier");
+            context.Role.AddRange(Admin, Manager, Cashier);
+            context.SaveChanges();
+        }
         public ICollection<Role> GetAll()
         {
-            if (currentUser != null || currentUser.RoleId == 3)
+            if (currentUser.RoleId == 3)
             {
                 return context.Role.ToList();
             }
@@ -30,7 +38,7 @@ namespace Business.Business.UserManagment.Controllers
         }
         public Role Get(int id)
         {
-            if (currentUser != null || currentUser.RoleId == 3)
+            if (currentUser.RoleId == 3)
             {
                 return context.Role.Find(id);
             }
@@ -41,7 +49,7 @@ namespace Business.Business.UserManagment.Controllers
         }
         public Role Get(string name)
         {
-            if (currentUser != null || currentUser.RoleId == 3)
+            if (currentUser.RoleId == 3)
             {
                 return context.Role.FirstOrDefault(u => u.Name == name);
             }
@@ -52,7 +60,7 @@ namespace Business.Business.UserManagment.Controllers
         }
         public ICollection<Role> GetByApproximateName(string name)
         {
-            if (currentUser != null || currentUser.RoleId == 3)
+            if (currentUser.RoleId == 3)
             {
                 return context.Role.Where(u => u.Name.Contains(name)).ToList();
             }
