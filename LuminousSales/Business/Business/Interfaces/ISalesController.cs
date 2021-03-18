@@ -8,7 +8,7 @@ namespace Business.Business.Sales
     {
         ICollection<T> GetAll();
         T Get(int id);
-        ICollection<T> GetByTime(byte[] startPeriod, byte[] endPeriod);
+        ICollection<T> GetByTime(DateTime time);
         void Add(int productId, double Amount);
         void Add(string productName, double Amount);
         void Delete(int id);

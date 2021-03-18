@@ -65,7 +65,7 @@ namespace Data.Migrations
                     UserId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
                     Amount = table.Column<double>(nullable: false),
-                    Time = table.Column<byte[]>(rowVersion: true, nullable: false)
+                    Time = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,7 +93,7 @@ namespace Data.Migrations
                     UserId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
                     Amount = table.Column<double>(nullable: false),
-                    Time = table.Column<byte[]>(rowVersion: true, nullable: false)
+                    Time = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -8,11 +8,30 @@ using Models.Models;
 
 namespace Business.Business.Sales
 {
-    public class StockController : IStockController<Product>
+    public class StockController : ISalesController<Product>
     {
         private LuminousContext context;
 
-
+        Product ISalesController<Product>.Get(int id)
+        {
+            return context.Product.Find(id);
+        }
+        ICollection<Product> ISalesController<Product>.GetByTime(DateTime time)
+        {
+            throw new NotImplementedException();
+        }
+        void ISalesController<Product>.Add(int productId, double Amount)
+        {
+            throw new NotImplementedException();
+        }
+        void ISalesController<Product>.Add(string productName, double Amount)
+        {
+            throw new NotImplementedException();
+        }
+        void ISalesController<Product>.Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
         public ICollection<Product> GetAll()
         {
             using (context = new LuminousContext())
@@ -21,15 +40,6 @@ namespace Business.Business.Sales
             }
             
         }
-
-        public Product GetById(int id)
-        {
-            using (context = new LuminousContext())
-            {
-                return context.Product.Find(id);
-            }
-        }
-
         public void AddProduct(Product product)
         {
             using (context = new LuminousContext())
@@ -41,8 +51,7 @@ namespace Business.Business.Sales
             }
             
         }
-
-        public void LoadProductById(int id)
+        public void LoadProduct(int id)
         {
             using (context = new LuminousContext())
             {
@@ -55,7 +64,7 @@ namespace Business.Business.Sales
             }
         }
 
-        public void LoadProductByName(Product product)
+        public void LoadProduct(Product product)
         {
             using (context = new LuminousContext())
             {
@@ -92,11 +101,6 @@ namespace Business.Business.Sales
                     context.SaveChanges();
                 }
             }
-        }
-
-        public Product GetByName(string name)
-        {
-            throw new NotImplementedException();
         }
     }
 

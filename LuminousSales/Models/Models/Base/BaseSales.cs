@@ -33,8 +33,8 @@ namespace Data.Base
         public virtual Product Products { get; set; }
         [Required]
         public double Amount { get; set; }
-        [Timestamp]
+        // [DataType(DataType.DateTime)]
         [Required]
-        public byte[] Time { get; set; }
+        public DateTime Time { get; set; }
     }
 }
