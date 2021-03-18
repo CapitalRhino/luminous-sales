@@ -9,26 +9,58 @@ namespace Business.Business.UserManagment
 {
     public class UserController : IController<User>
     {
-        private LuminousContext context = new LuminousContext();
-        private RoleController rolectrl = new RoleController();
+        private LuminousContext context;
+        private RoleController rolectrl;
+        private User currentUser;
+        public UserController()
+        {
+            this.context = new LuminousContext();
+        }
+        public UserController(User currentUser)
+        {
+            this.currentUser = currentUser;
+            this.context = new LuminousContext();
+            this.rolectrl = new RoleController(currentUser);
+        }
         public ICollection<User> GetAll()
         {
-            return context.User.ToList();
+            if (currentUser != null || currentUser.RoleId == 3)
+            {
+                return context.User.ToList();
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
         }
         public void CheckIfUserEverCreated()
         {
-            if (!GetAll().Any())
+            if (!context.User.ToList().Any())
             {
                 throw new ArgumentException("No users in the database!");
             }
         }
         public User Get(int id)
         {
-            return context.User.Find(id);
+            if (currentUser != null || currentUser.RoleId == 3)
+            {
+                return context.User.Find(id);
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
         }
         public User Get(string name)
         {
-            return context.User.FirstOrDefault(u => u.Name == name);
+            if (currentUser != null || currentUser.RoleId == 3)
+            {
+                return context.User.FirstOrDefault(u => u.Name == name);
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
         }
         public User ValidatePassword(string password)
         {
@@ -41,247 +73,343 @@ namespace Business.Business.UserManagment
         }
         public ICollection<User> GetByApproximateName(string name)
         {
-            return context.User.Where(u => u.Name.Contains(name)).ToList();
-        }
-        public void RegisterItem(string name, string password, int roleId)
-        {
-            if (GetAll().Where(u => u.Name == name).Any())
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                throw new ArgumentException("The username is already taken!");
-            }
-            else if (GetAll().Where(u => u.Password == password).Any())
-            {
-                throw new ArgumentException("The password is already taken"!);
+                return context.User.Where(u => u.Name.Contains(name)).ToList();
             }
             else
             {
-                var foundRole = rolectrl.Get(roleId);
-                if (foundRole != null)
+                throw new ArgumentException("Insufficient Role!");
+            }
+        }
+        public void RegisterItem(string name, string password)
+        {
+            var user = new User(name, password, 1);
+            context.User.Add(user);
+            context.SaveChanges();
+        }
+        public void RegisterItem(string name, string password, int roleId)
+        {
+            if (currentUser != null || currentUser.RoleId == 3)
+            {
+                if (GetAll().Where(u => u.Name == name).Any())
                 {
-                    var user = new User(name, password, roleId);
-                    context.User.Add(user);
-                    context.SaveChanges();
+                    throw new ArgumentException("The username is already taken!");
+                }
+                else if (GetAll().Where(u => u.Password == password).Any())
+                {
+                    throw new ArgumentException("The password is already taken"!);
                 }
                 else
                 {
-                    throw new ArgumentException("Role not found!");
+                    var foundRole = rolectrl.Get(roleId);
+                    if (foundRole != null)
+                    {
+                        var user = new User(name, password, roleId);
+                        context.User.Add(user);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Role not found!");
+                    }
                 }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void RegisterItem(string name, string password, string roleName)
         {
-            if (GetAll().Where(u => u.Name == name).Any())
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                throw new ArgumentException("The username is already taken!");
-            }
-            else if (GetAll().Where(u => u.Password == password).Any())
-            {
-                throw new ArgumentException("The password is already taken"!);
-            }
-            else
-            {
-                var foundRole = rolectrl.Get(roleName);
-                if (foundRole != null)
+                if (GetAll().Where(u => u.Name == name).Any())
                 {
-                    var user = new User(name, password, foundRole.Id);
-                    context.User.Add(user);
-                    context.SaveChanges();
+                    throw new ArgumentException("The username is already taken!");
+                }
+                else if (GetAll().Where(u => u.Password == password).Any())
+                {
+                    throw new ArgumentException("The password is already taken"!);
                 }
                 else
                 {
-                    throw new ArgumentException("Role not found!");
+                    var foundRole = rolectrl.Get(roleName);
+                    if (foundRole != null)
+                    {
+                        var user = new User(name, password, foundRole.Id);
+                        context.User.Add(user);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Role not found!");
+                    }
                 }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void UpdateName(int id, string newName)
         {
-            var user = Get(id);
-            if (user != null)
+            if (currentUser != null || currentUser.Id == 3)
             {
-                if (user.Name != newName)
+                var user = Get(id);
+                if (user != null)
                 {
-                    user.Name = newName;
-                    context.SaveChanges();
+                    if (user.Name != newName)
+                    {
+                        user.Name = newName;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Usernames match. Please choose another username!");
+                    }
                 }
                 else
                 {
-                    throw new ArgumentException("Usernames match. Please choose another username!");
+                    throw new ArgumentException("No user with such id");
                 }
             }
             else
             {
-                throw new ArgumentException("No user with such id");
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void UpdateName(string oldName, string newName)
         {
-            if (oldName != newName)
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                var user = Get(oldName);
-                if (user != null)
+                if (oldName != newName)
                 {
-                    user.Name = newName;
-                    context.SaveChanges();
+                    var user = Get(oldName);
+                    if (user != null)
+                    {
+                        user.Name = newName;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("No user with such name!");
+                    }
                 }
                 else
                 {
-                    throw new ArgumentException("No user with such name!");
+                    throw new ArgumentException("Usernames match. Please use another username!");
                 }
             }
             else
             {
-                throw new ArgumentException("Usernames match. Please use another username!");
+                throw new ArgumentException("Insufficient Role!");
             }
-
         }
         public void UpdatePassword(int id, string newPassword)
         {
-            var user = Get(id);
-            if (user != null)
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                if (user.Password != newPassword)
+                var user = Get(id);
+                if (user != null)
                 {
-                    user.Password = newPassword;
-                    context.SaveChanges();
+                    if (user.Password != newPassword)
+                    {
+                        user.Password = newPassword;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Passwords match! Please use another password!");
+                    }
                 }
                 else
                 {
-                    throw new ArgumentException("Passwords match! Please use another password!");
+                    throw new ArgumentException("User not found");
                 }
             }
             else
             {
-                throw new ArgumentException("User not found");
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void UpdatePassword(string name, string newPassword)
         {
-            var user = Get(name);
-            if (user != null)
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                if (user.Password != newPassword)
+                var user = Get(name);
+                if (user != null)
                 {
-                    user.Password = newPassword;
-                    context.SaveChanges();
+                    if (user.Password != newPassword)
+                    {
+                        user.Password = newPassword;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Passwords match! Please use another password!");
+                    }
                 }
                 else
                 {
-                    throw new ArgumentException("Passwords match! Please use another password!");
+                    throw new ArgumentException("User not found");
                 }
             }
             else
             {
-                throw new ArgumentException("User not found");
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void UpdateRole(int id, int RoleId)
         {
-            var user = Get(id);
-            if (user != null)
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                var foundRole = rolectrl.Get(RoleId);
-                if (foundRole != null)
+                var user = Get(id);
+                if (user != null)
                 {
-                    user.RoleId = RoleId;
-                    context.SaveChanges();
+                    var foundRole = rolectrl.Get(RoleId);
+                    if (foundRole != null)
+                    {
+                        user.RoleId = RoleId;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Role not found!");
+                    }
                 }
                 else
                 {
-                    throw new ArgumentException("Role not found!");
+                    throw new ArgumentException("User not found");
                 }
             }
             else
             {
-                throw new ArgumentException("User not found");
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void UpdateRole(int id, string roleName)
         {
-            var user = Get(id);
-            if (user != null)
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                var foundRole = rolectrl.Get(roleName);
-                if (foundRole != null)
+                var user = Get(id);
+                if (user != null)
                 {
-                    user.RoleId = foundRole.Id;
-                    context.SaveChanges();
+                    var foundRole = rolectrl.Get(roleName);
+                    if (foundRole != null)
+                    {
+                        user.RoleId = foundRole.Id;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Role not found!");
+                    }
                 }
                 else
                 {
-                    throw new ArgumentException("Role not found!");
+                    throw new ArgumentException("User not found");
                 }
             }
             else
             {
-                throw new ArgumentException("User not found");
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void UpdateRole(string name, int roleId)
         {
-            var user = Get(name);
-            if (user != null)
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                var foundRole = rolectrl.Get(roleId);
-                if (foundRole != null)
+                var user = Get(name);
+                if (user != null)
                 {
-                    user.RoleId = roleId;
-                    context.SaveChanges();
+                    var foundRole = rolectrl.Get(roleId);
+                    if (foundRole != null)
+                    {
+                        user.RoleId = roleId;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Role not found!");
+                    }
                 }
                 else
                 {
-                    throw new ArgumentException("Role not found!");
+                    throw new ArgumentException("User not found");
                 }
             }
             else
             {
-                throw new ArgumentException("User not found");
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void UpdateRole(string name, string roleName)
         {
-            var user = Get(name);
-            if (user != null)
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                var foundRole = rolectrl.Get(roleName);
-                if (foundRole != null)
+                var user = Get(name);
+                if (user != null)
                 {
-                    user.RoleId = foundRole.Id;
-                    context.SaveChanges();
+                    var foundRole = rolectrl.Get(roleName);
+                    if (foundRole != null)
+                    {
+                        user.RoleId = foundRole.Id;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Role not found!");
+                    }
                 }
                 else
                 {
-                    throw new ArgumentException("Role not found!");
+                    throw new ArgumentException("User not found");
                 }
             }
             else
             {
-                throw new ArgumentException("User not found");
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void Delete(int id)
         {
-            var user = Get(id);
-            if (user != null)
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                context.User.Remove(user);
-                context.SaveChanges();
+                var user = Get(id);
+                if (user != null)
+                {
+                    context.User.Remove(user);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("User not found");
+                }
             }
             else
             {
-                throw new ArgumentException("User not found");
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void Delete(string name)
         {
-            var user = Get(name);
-            if (user != null)
+            if (currentUser != null || currentUser.RoleId == 3)
             {
-                context.User.Remove(user);
-                context.SaveChanges();
+                var user = Get(name);
+                if (user != null)
+                {
+                    context.User.Remove(user);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("User not found");
+                }
             }
             else
             {
-                throw new ArgumentException("User not found");
+                throw new ArgumentException("Insufficient Role!");
             }
         }
     }

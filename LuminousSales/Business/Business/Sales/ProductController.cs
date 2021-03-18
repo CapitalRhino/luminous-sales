@@ -10,11 +10,12 @@ namespace Business.Business.Sales
 {
     class ProductController : IController<Product>
     {
-        private LuminousContext context = new LuminousContext();
+        private LuminousContext context;
         private User currentUser;
         public ProductController(User currenUser)
         {
             this.currentUser = currenUser;
+            context = new LuminousContext();
         }
         public ICollection<Product> GetAll()
         {
