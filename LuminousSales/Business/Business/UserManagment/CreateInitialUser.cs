@@ -34,7 +34,7 @@ namespace Business.Business.UserManagment
             using (context = new LuminousContext())
             {
                 int roleToAttach = context.Role.FirstOrDefault(r => r.Name == "Admin").Id;
-                userctl.CreateUser(this.Username, this.Password, roleToAttach);
+                userctl.RegisterItem(this.Username, this.Password, roleToAttach);
             }
         }
 

@@ -1,52 +1,105 @@
-﻿using Models;
+﻿using Business.Business.UserManagment.Controllers;
+using Models;
 using Models.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace Business.Business.UserManagment
 {
     public class UserController : IController<User>
     {
         private LuminousContext context = new LuminousContext();
-
+        private RoleController rolectrl = new RoleController();
         public ICollection<User> GetAll()
         {
             return context.User.ToList();
         }
-        public void DeleteById()
+        public void CheckIfUserEverCreated()
         {
-            throw new NotImplementedException();
+            if (!GetAll().Any())
+            {
+                throw new ArgumentException("No users in the database!");
+            }
         }
-
-        public void DeleteByName()
+        public User Get(int id)
         {
-            throw new NotImplementedException();
+            return context.User.Find(id);
         }
-        public User SearchById(int id)
-        {
-            return context.User.FirstOrDefault(u => u.Id == id);
-        }
-
-        public ICollection<User> SearchByApproximateName(string name)
-        {
-            return context.User.Where(u => u.Name.Contains(name)).ToList();
-        }
-        public User SearchByExactName(string name)
+        public User Get(string name)
         {
             return context.User.FirstOrDefault(u => u.Name == name);
         }
-
-        public void UpdateNameById(int id, string newName)
+        public void ValidatePassword(string password)
         {
-            var user = SearchById(id);
+            if (!GetAll().Where(u => u.Password == password).Any())
+            {
+                throw new ArgumentException("Invalid User!");
+            }
+        }
+        public ICollection<User> GetByApproximateName(string name)
+        {
+            return context.User.Where(u => u.Name.Contains(name)).ToList();
+        }
+        public void RegisterItem(string name, string password, int roleId)
+        {
+            if (GetAll().Where(u => u.Name == name).Any())
+            {
+                throw new ArgumentException("The username is already taken!");
+            }
+            else if (GetAll().Where(u => u.Password == password).Any())
+            {
+                throw new ArgumentException("The password is already taken"!);
+            }
+            else
+            {
+                var foundRole = rolectrl.Get(roleId);
+                if (foundRole != null)
+                {
+                    var user = new User(name, password, roleId);
+                    context.User.Add(user);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("Role not found!");
+                }
+            }
+        }
+        public void RegisterItem(string name, string password, string roleName)
+        {
+            if (GetAll().Where(u => u.Name == name).Any())
+            {
+                throw new ArgumentException("The username is already taken!");
+            }
+            else if (GetAll().Where(u => u.Password == password).Any())
+            {
+                throw new ArgumentException("The password is already taken"!);
+            }
+            else
+            {
+                var foundRole = rolectrl.Get(roleName);
+                if (foundRole != null)
+                {
+                    var user = new User(name, password, foundRole.Id);
+                    context.User.Add(user);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("Role not found!");
+                }
+            }
+        }
+        public void UpdateName(int id, string newName)
+        {
+            var user = Get(id);
             if (user != null)
             {
                 if (user.Name != newName)
                 {
                     user.Name = newName;
+                    context.SaveChanges();
                 }
                 else
                 {
@@ -58,15 +111,15 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("No user with such id");
             }
         }
-
-        public void UpdateNameByOldName(string oldName, string newName)
+        public void UpdateName(string oldName, string newName)
         {
             if (oldName != newName)
             {
-                var user = SearchByExactName(oldName);
+                var user = Get(oldName);
                 if (user != null)
                 {
                     user.Name = newName;
+                    context.SaveChanges();
                 }
                 else
                 {
@@ -79,14 +132,15 @@ namespace Business.Business.UserManagment
             }
 
         }
-        public void UpdatePasswordById(int id, string newPassword)
+        public void UpdatePassword(int id, string newPassword)
         {
-            var user = SearchById(id);
+            var user = Get(id);
             if (user != null)
             {
                 if (user.Password != newPassword)
                 {
                     user.Password = newPassword;
+                    context.SaveChanges();
                 }
                 else
                 {
@@ -98,14 +152,15 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("User not found");
             }
         }
-        public void UpdatePasswordByName(string name, string newPassword)
+        public void UpdatePassword(string name, string newPassword)
         {
-            var user = SearchByExactName(name);
+            var user = Get(name);
             if (user != null)
             {
                 if (user.Password != newPassword)
                 {
                     user.Password = newPassword;
+                    context.SaveChanges();
                 }
                 else
                 {
@@ -117,15 +172,115 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("User not found");
             }
         }
-
-        public void DeleteById(int id)
+        public void UpdateRole(int id, int RoleId)
         {
-            throw new NotImplementedException();
+            var user = Get(id);
+            if (user != null)
+            {
+                var foundRole = rolectrl.Get(RoleId);
+                if (foundRole != null)
+                {
+                    user.RoleId = RoleId;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("Role not found!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("User not found");
+            }
         }
-
-        public void DeleteByName(string name)
+        public void UpdateRole(int id, string roleName)
         {
-            throw new NotImplementedException();
+            var user = Get(id);
+            if (user != null)
+            {
+                var foundRole = rolectrl.Get(roleName);
+                if (foundRole != null)
+                {
+                    user.RoleId = foundRole.Id;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("Role not found!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("User not found");
+            }
+        }
+        public void UpdateRole(string name, int roleId)
+        {
+            var user = Get(name);
+            if (user != null)
+            {
+                var foundRole = rolectrl.Get(roleId);
+                if (foundRole != null)
+                {
+                    user.RoleId = roleId;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("Role not found!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("User not found");
+            }
+        }
+        public void UpdateRole(string name, string roleName)
+        {
+            var user = Get(name);
+            if (user != null)
+            {
+                var foundRole = rolectrl.Get(roleName);
+                if (foundRole != null)
+                {
+                    user.RoleId = foundRole.Id;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("Role not found!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("User not found");
+            }
+        }
+        public void Delete(int id)
+        {
+            var user = Get(id);
+            if (user != null)
+            {
+                context.User.Remove(user);
+                context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("User not found");
+            }
+        }
+        public void Delete(string name)
+        {
+            var user = Get(name);
+            if (user != null)
+            {
+                context.User.Remove(user);
+                context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("User not found");
+            }
         }
     }
 }

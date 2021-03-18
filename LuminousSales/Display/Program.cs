@@ -10,13 +10,14 @@ namespace Display
     {
         static void Main(string[] args)
         {
-            var val = new UserValidator();
             try
             {
-                val.CheckIfUserEverCreated();
-                var InitialCreation = new CreateInitialUser("Admin", "pass123");
-                InitialCreation.CreateRoles();
-                InitialCreation.CreateFirstUser();
+                var a = new UserController();
+                a.UpdateRole(1, "Cashier");
+                foreach (var item in a.GetAll())
+                {
+                    Console.WriteLine($"{item.Name} {item.Role.Name}");
+                }
             }
             catch (Exception e)
             {
