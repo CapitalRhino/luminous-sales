@@ -10,26 +10,24 @@ namespace Business.Business.UserManagment
     public class UserValidator
     {
         private LuminousContext context;
-        public bool CheckIfUserIsCreated()
+        public void CheckIfUserEverCreated()
         {
             using (context = new LuminousContext())
             {
                 if (context.User.ToList().Any())
                 {
-                    return true;
+                    throw new ArgumentException("First user is already created!");
                 }
-                return false;
             }
         }
-        public bool CheckPassword(string Password)
+        public void CheckPassword(string Password)
         {
             using (context = new LuminousContext())
             {
                 if (context.User.ToList().Exists(user => user.Password == Password))
                 {
-                    return true;
+                    throw new ArgumentException("Invalid User!");
                 }
-                return false;
             }
         }
     }

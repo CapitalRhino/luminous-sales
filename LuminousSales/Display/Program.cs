@@ -11,15 +11,16 @@ namespace Display
         static void Main(string[] args)
         {
             var val = new UserValidator();
-            if (!val.CheckIfUserIsCreated())
+            try
             {
-                var InitialCreation = new CreateInitialUser("Admin", "Admin", "pass123");
-                InitialCreation.CreateFirstRole();
+                val.CheckIfUserEverCreated();
+                var InitialCreation = new CreateInitialUser("Admin", "pass123");
+                InitialCreation.CreateRoles();
                 InitialCreation.CreateFirstUser();
             }
-            else
+            catch (Exception e)
             {
-                Console.WriteLine("Already created");
+                Console.WriteLine(e.Message);
             }
         }
     }

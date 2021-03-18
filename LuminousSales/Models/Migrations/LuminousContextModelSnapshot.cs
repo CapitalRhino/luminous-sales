@@ -19,27 +19,18 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Data.Models.RolePermission", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PermisionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RoleId", "PermisionId");
-
-                    b.HasIndex("PermisionId");
-
-                    b.ToTable("RolePermission");
-                });
-
             modelBuilder.Entity("Models.Models.Deal", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<byte[]>("Time")
                         .IsConcurrencyToken()
@@ -52,28 +43,11 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Deal");
-                });
-
-            modelBuilder.Entity("Models.Models.Permission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Permission");
                 });
 
             modelBuilder.Entity("Models.Models.Product", b =>
@@ -86,9 +60,6 @@ namespace Data.Migrations
                     b.Property<double>("AmountInStock")
                         .HasColumnType("float");
 
-                    b.Property<int?>("DealId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -96,17 +67,10 @@ namespace Data.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int?>("StockId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("DealId");
 
                     b.HasIndex("Name")
                         .IsUnique();
-
-                    b.HasIndex("StockId");
 
                     b.ToTable("Product");
                 });
@@ -137,6 +101,12 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("Time")
                         .IsConcurrencyToken()
                         .IsRequired()
@@ -147,6 +117,8 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -181,23 +153,14 @@ namespace Data.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("Data.Models.RolePermission", b =>
-                {
-                    b.HasOne("Models.Models.Permission", "Permission")
-                        .WithMany("Role")
-                        .HasForeignKey("PermisionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.Models.Role", "Roles")
-                        .WithMany("Permissions")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Models.Models.Deal", b =>
                 {
+                    b.HasOne("Models.Models.Product", "Products")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Models.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -205,19 +168,14 @@ namespace Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Models.Models.Product", b =>
-                {
-                    b.HasOne("Models.Models.Deal", null)
-                        .WithMany("Products")
-                        .HasForeignKey("DealId");
-
-                    b.HasOne("Models.Models.Stock", null)
-                        .WithMany("Products")
-                        .HasForeignKey("StockId");
-                });
-
             modelBuilder.Entity("Models.Models.Stock", b =>
                 {
+                    b.HasOne("Models.Models.Product", "Products")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Models.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")

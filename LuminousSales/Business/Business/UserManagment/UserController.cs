@@ -1,5 +1,4 @@
-﻿using Data.Models;
-using Models;
+﻿using Models;
 using Models.Models;
 using System;
 using System.Collections.Generic;
@@ -12,26 +11,11 @@ namespace Business.Business.UserManagment
     public class UserController
     {
         private LuminousContext context;
-        public void CreateRole(string RoleName, Permission Permission)
-        {
-            using (context = new LuminousContext())
-            { 
-                var role = new Role(RoleName);
-                var relationship = new RolePermission();
-                relationship.Roles = role;
-                relationship.Permission = Permission;
-                role.Permissions.Add(relationship);
-                Permission.Role.Add(relationship);
-                context.RolePermission.Add(relationship);
-                context.Role.Add(role);
-                context.SaveChanges();
-            }
-        }
-        public void CreateUser(string Username, string Password, Role Role)
+        public void CreateUser(string Username, string Password, int RoleId)
         {
             using (context = new LuminousContext())
             {
-                var user = new User(Username, Password, Role);
+                var user = new User(Username, Password, RoleId);
                 context.User.Add(user);
                 context.SaveChanges();
             }

@@ -9,6 +9,6 @@ namespace Models.Models
     public class Stock : BaseSales
     {
         public Stock() : base(){}
-        public Stock(User User, ICollection<Product> Products) : base(User, Products){}
+        public Stock(int UserId, int ProductId, double Amount) : base(UserId, ProductId, Amount){}
     }
 }
