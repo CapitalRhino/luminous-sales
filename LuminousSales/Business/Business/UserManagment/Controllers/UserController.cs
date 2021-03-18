@@ -30,12 +30,14 @@ namespace Business.Business.UserManagment
         {
             return context.User.FirstOrDefault(u => u.Name == name);
         }
-        public void ValidatePassword(string password)
+        public User ValidatePassword(string password)
         {
-            if (!GetAll().Where(u => u.Password == password).Any())
+            var user = context.User.FirstOrDefault();
+            if (user == null)
             {
                 throw new ArgumentException("Invalid User!");
             }
+            return user;
         }
         public ICollection<User> GetByApproximateName(string name)
         {
