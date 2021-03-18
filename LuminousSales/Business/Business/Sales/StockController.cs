@@ -21,22 +21,39 @@ namespace Business.Business.Sales
 
         public ICollection<Stock> GetAll()
         {
-            if (currentUser.RoleId > 1) 
-            return context.Stock.ToList();
-            else throw new InvalidOperationException("Cannot return all stocks!");
+            if (currentUser.RoleId > 1)
+            {
+                return context.Stock.ToList();
+            }
+            else
+            {
+                throw new InvalidOperationException("Cannot return all stocks!");
+            }
              
         }
 
         public Stock Get(int id)
         {
             if (currentUser.RoleId > 1)
-            return context.Stock.Find(id);
-            else throw new InvalidOperationException("Cannot get stock!");
+            {
+                return context.Stock.Find(id);
+            }
+            else
+            {
+                throw new InvalidOperationException("Cannot get stock!");
+            }
         }
 
-        public ICollection<Stock> GetByTime(DateTime time)
+        public ICollection<Stock> GetByTime(DateTime startTime, DateTime endTime)
         {
-            throw new NotImplementedException();
+            if (currentUser.RoleId > 1)
+            {
+                return context.Stock.Where(x => x.Time <= endTime && x.Time >= startTime).ToList();
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient role!");
+            }
         }
 
         public void Add(int productId, double Amount)
@@ -49,29 +66,40 @@ namespace Business.Business.Sales
                     context.Stock.Add(stock);
                     context.SaveChanges();
                 }
-                else throw new ArgumentException("Amount cannot be negative");
-                
+                else
+                {
+                    throw new ArgumentException("Amount cannot be negative");
+                }
+
             }
-            else throw new ArgumentException("Insufficient role!");
+            else
+            {
+                throw new ArgumentException("Insufficient role!");
+            }
         }
 
         public void Add(string productName, double Amount)
         {
             if (currentUser.RoleId > 1)
             {
-               if (Amount > 0)
-                 {
+                if (Amount > 0)
+                {
                     productCtrl = new ProductController(currentUser);
                     var productId = productCtrl.Get(productName).Id;
-                    var stock = new Stock(currentUser.Id, productId , Amount);
+                    var stock = new Stock(currentUser.Id, productId, Amount);
                     context.Stock.Add(stock);
                     context.SaveChanges();
-                 }
-                
-              else throw new ArgumentException("Amount cannot be negative");
-              
+                }
+                else
+                {
+                    throw new ArgumentException("Amount cannot be negative");
+                }
+
             }
-            else throw new ArgumentException("Insufficient role!");
+            else
+            {
+                throw new ArgumentException("Insufficient role!");
+            }
              
         }
 
@@ -85,13 +113,17 @@ namespace Business.Business.Sales
                     context.Stock.Remove(user);
                     context.SaveChanges();
                 }
-                else throw new ArgumentException("User not found");
-                
+                else
+                {
+                    throw new ArgumentException("User not found");
+                }
+
             }
-            else throw new ArgumentException("Insufficient role!");
-             
+            else
+            {
+                throw new ArgumentException("Insufficient role!");
+            }
         }
-   
     }
 
 }
