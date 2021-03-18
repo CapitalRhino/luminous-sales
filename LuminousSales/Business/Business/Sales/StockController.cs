@@ -66,7 +66,7 @@ namespace Business.Business.Sales
                if (Amount > 0)
                  {
                     productCtrl = new ProductController(currentUser);
-                    var productId = Get(productName);
+                    var productId = productCtrl.Get(productName).Id;
                     var stock = new Stock(currentUser.Id, productId , Amount);
                     context.Stock.Add(stock);
                     context.SaveChanges();
