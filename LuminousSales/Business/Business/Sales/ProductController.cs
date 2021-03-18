@@ -34,45 +34,178 @@ namespace Business.Business.Sales
         }
         public void AddItem(string name, double price)
         {
-            var product = new Product(name, price);
-            context.Product.Add(product);
+            if (currentUser.RoleId == 3)
+            {
+                if (!GetAll().Where(p => p.Name == name).Any())
+                {
+                    if (price > 0)
+                    {
+                        var product = new Product(name, price);
+                        context.Product.Add(product);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Price cannot be negative");
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("Item with the given name already exists!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
         }
         public void UpdateName(int id, string newName)
         {
-            if (currentUser.RoleId > 1)
+            if (currentUser.RoleId == 3)
             {
                 var product = Get(id);
                 if (product != null)
                 {
-
+                    if (!GetAll().Where(p => p.Name == newName).Any())
+                    {
+                        product.Name = newName;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Item with the given name already exists!");
+                    }
                 }
                 else
                 {
-
+                    throw new ArgumentException("Product id not valid!");
                 }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
             }
         }
         public void UpdateName(string oldName, string newName)
         {
-            throw new NotImplementedException();
+            if (currentUser.RoleId == 3)
+            {
+                var product = Get(oldName);
+                if (product != null)
+                {
+                    if (!GetAll().Where(p => p.Name == newName).Any())
+                    {
+                        product.Name = newName;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Item with the given name already exists!");
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("Product name not valid!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
         }
-        public void UpdatePrice(int id)
+        public void UpdatePrice(int id, double price)
         {
-
+            if (currentUser.RoleId  == 3)
+            {
+                var product = Get(id);
+                if (product != null)
+                {
+                    if (price > 0)
+                    {
+                        product.Price = price;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Price cannot be negative");
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("Product id not valid!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
         }
-        public void UpdatePrice(string name)
+        public void UpdatePrice(string name, double price)
         {
-
+            if (currentUser.RoleId == 3)
+            {
+                var product = Get(name);
+                if (product != null)
+                {
+                    if (price > 0)
+                    {
+                        product.Price = price;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Price cannot be negative");
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("Product name not valid!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
         }
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            if (currentUser.RoleId == 3)
+            {
+                var user = Get(id);
+                if (user != null)
+                {
+                    context.Product.Remove(user);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("User not found");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
         }
-
         public void Delete(string name)
         {
-            throw new NotImplementedException();
+            if (currentUser.RoleId == 3)
+            {
+                var user = Get(name);
+                if (user != null)
+                {
+                    context.Product.Remove(user);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("User not found");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
         }
-
     }
 }
