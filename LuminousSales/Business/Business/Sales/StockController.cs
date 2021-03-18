@@ -8,100 +8,100 @@ using Models.Models;
 
 namespace Business.Business.Sales
 {
-    public class StockController : ISalesController<Product>
+    public class StockController : ISalesController<Stock>
     {
-        private LuminousContext context;
+        private LuminousContext context = new LuminousContext();
+        private User currentUser;
+        private ProductController productCtrl;
 
-        Product ISalesController<Product>.Get(int id)
+        public StockController(User currentUser)
         {
-            return context.Product.Find(id);
+            this.currentUser = currentUser;
         }
-        ICollection<Product> ISalesController<Product>.GetByTime(DateTime time)
+
+        public ICollection<Stock> GetAll()
         {
-            throw new NotImplementedException();
-        }
-        void ISalesController<Product>.Add(int productId, double Amount)
-        {
-            throw new NotImplementedException();
-        }
-        void ISalesController<Product>.Add(string productName, double Amount)
-        {
-            throw new NotImplementedException();
-        }
-        void ISalesController<Product>.Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-        public ICollection<Product> GetAll()
-        {
-            using (context = new LuminousContext())
-            {
-                return context.Product.ToList();
-            }
-            
-        }
-        public void AddProduct(Product product)
-        {
-            using (context = new LuminousContext())
-            {
+            if (currentUser.RoleId > 1) 
+            return context.Stock.ToList();
+            else throw new InvalidOperationException("Cannot return all stocks!");
              
-                context.Product.Add(product);
-                context.SaveChanges();
-
-            }
-            
-        }
-        public void LoadProduct(int id)
-        {
-            using (context = new LuminousContext())
-            {
-                var item = context.Product.Find(id);
-                if (item != null)
-                {
-                    context.Entry(item).CurrentValues.SetValues(id);
-                    context.SaveChanges();
-                }
-            }
         }
 
-        public void LoadProduct(Product product)
+        public Stock Get(int id)
         {
-            using (context = new LuminousContext())
+            if (currentUser.RoleId > 1)
             {
-                var item = context.Product.Find(product.Id);
-                if (item !=null)
+                return context.Stock.Find(id);
+            }
+            else throw new InvalidOperationException("Cannot get stock!");
+        }
+
+        public ICollection<Stock> GetByTime(DateTime time)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add(int productId, double Amount)
+        {
+            if (currentUser.RoleId > 1)
+            {
+                if (Amount > 0)
                 {
-                    context.Entry(item).CurrentValues.SetValues(product);
+                    var stock = new Stock(currentUser.Id, productId, Amount);
+                    context.Stock.Add(stock);
                     context.SaveChanges();
                 }
+                else
+                {
+                    throw new ArgumentException("Amount cannot be negative");
+                }
+            }
+            else throw new ArgumentException("Insufficient role!");
+        }
+
+        public void Add(string productName, double Amount)
+        {
+            if (currentUser.RoleId > 1)
+            {
+               if (Amount > 0)
+                 {
+                    productCtrl = new ProductController(currentUser);
+                    var productId = Get(productName);
+                    var stock = new Stock(currentUser.Id, productId , Amount);
+                    context.Stock.Add(stock);
+                    context.SaveChanges();
+                 }
+                
+              else throw new ArgumentException("Amount cannot be negative");
+              
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient role!");
             }
         }
 
-        public void Sale(int id)
+        public void Delete(int id)
         {
-            using (context = new LuminousContext())
+            if (currentUser.RoleId > 1)
             {
-                var product = context.Product.Find(id);
-                if (product != null)
+                var user = Get(id);
+                if (user != null)
                 {
-                    context.Product.Remove(product);
+                    context.Stock.Remove(user);
                     context.SaveChanges();
                 }
-            }
-        }
-
-        public void Sale(string name)
-        {
-            using (context = new LuminousContext())
-            {
-                var product = context.Product.Find(name);
-                if (product !=null)
+                else
                 {
-                    context.Product.Remove(product);
-                    context.SaveChanges();
+                    throw new ArgumentException("User not found");
                 }
             }
+            else
+            {
+                throw new ArgumentException("Insufficient role!");
+            }
         }
+   
     }
 
 }
