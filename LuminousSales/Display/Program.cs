@@ -10,19 +10,8 @@ namespace Display
     {
         static void Main(string[] args)
         {
-            try
-            {
-                var a = new UserController();
-                a.UpdateRole(1, "Cashier");
-                foreach (var item in a.GetAll())
-                {
-                    Console.WriteLine($"{item.Name} {item.Role.Name}");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            var a = new InitialSetup.InitialSetup();
+            a.InitialRegistration();
         }
     }
 }
