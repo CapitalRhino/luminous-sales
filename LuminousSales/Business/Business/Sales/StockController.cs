@@ -30,9 +30,7 @@ namespace Business.Business.Sales
         public Stock Get(int id)
         {
             if (currentUser.RoleId > 1)
-            {
-                return context.Stock.Find(id);
-            }
+            return context.Stock.Find(id);
             else throw new InvalidOperationException("Cannot get stock!");
         }
 
@@ -51,10 +49,8 @@ namespace Business.Business.Sales
                     context.Stock.Add(stock);
                     context.SaveChanges();
                 }
-                else
-                {
-                    throw new ArgumentException("Amount cannot be negative");
-                }
+                else throw new ArgumentException("Amount cannot be negative");
+                
             }
             else throw new ArgumentException("Insufficient role!");
         }
@@ -75,10 +71,8 @@ namespace Business.Business.Sales
               else throw new ArgumentException("Amount cannot be negative");
               
             }
-            else
-            {
-                throw new ArgumentException("Insufficient role!");
-            }
+            else throw new ArgumentException("Insufficient role!");
+             
         }
 
         public void Delete(int id)
@@ -91,15 +85,11 @@ namespace Business.Business.Sales
                     context.Stock.Remove(user);
                     context.SaveChanges();
                 }
-                else
-                {
-                    throw new ArgumentException("User not found");
-                }
+                else throw new ArgumentException("User not found");
+                
             }
-            else
-            {
-                throw new ArgumentException("Insufficient role!");
-            }
+            else throw new ArgumentException("Insufficient role!");
+             
         }
    
     }
