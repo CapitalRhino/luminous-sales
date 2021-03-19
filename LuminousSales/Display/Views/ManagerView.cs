@@ -15,7 +15,11 @@ namespace Display.Views
             stockctrl = new StockController(currentUser);
             dealctrl = new DealController(currentUser);
         }
-
+        public override void ShowAvaliableCommands()
+        {
+            base.ShowAvaliableCommands();
+            Console.WriteLine("2. Stock");
+        }
         public void GetAll()
         {
             try
@@ -53,21 +57,19 @@ namespace Display.Views
 
         }
 
-        public void GetByTime(DateTime startTime, DateTime endTime)
+        public void GetByTime()
         {
             try
             {
                 Console.WriteLine("Getting stock by time...");
                 Console.WriteLine("Enter start time: ");
-                startTime = new DateTime();
+                DateTime startTime = DateTime.Parse(Console.ReadLine());
                 Console.WriteLine("Enter end time: ");
-                endTime = new DateTime();
+                DateTime endTime = DateTime.Parse(Console.ReadLine());
                 stockctrl.GetByTime(startTime, endTime);
-
             }
             catch (Exception e)
             {
-
                 Console.WriteLine(e.Message);
             }
         }

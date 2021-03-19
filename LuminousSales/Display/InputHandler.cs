@@ -8,11 +8,9 @@ namespace Display
     {
         public void CommandLineInterface()
         {
-            ShowAvaliableCommands();
             while (true)
             {
                 Console.WriteLine("Select action");
-                Console.WriteLine("Sales, UserManagment");
                 string input = "";
                 try
                 {
@@ -30,14 +28,6 @@ namespace Display
                     default: break;
                 }
             }
-        }
-        public void ShowAvaliableCommands()
-        {
-            Console.WriteLine("asad");
-            Console.WriteLine("asad");
-            Console.WriteLine("asad");
-            Console.WriteLine("asad");
-            Console.WriteLine("asad");
         }
         public void Sales()
         {
