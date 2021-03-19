@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Display.Views
 {
-    class AdminView : ManagerView
+    public class AdminView : ManagerView
     {
         UserController userctl = new UserController();
         public AdminView(User currentUser) : base(currentUser)
