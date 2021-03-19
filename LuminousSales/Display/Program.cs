@@ -15,10 +15,25 @@ namespace Display
             try
             {
                 var uc = new UserController();
-                User currentUser = uc.ValidatePassword("admin123");
+                Console.Write("Enter password: ");
+                User currentUser = uc.ValidatePassword(Console.ReadLine());
                 uc = new UserController(currentUser);
-                var cv = new CashierView(currentUser);
-                cv.SaleHandle();
+                var view = new BaseView(currentUser);
+                switch (currentUser.RoleId)
+                {
+                    case 1:
+                        view = new CashierView(currentUser);
+                        break;
+                    case 2:
+                        view = new ManagerView(currentUser);
+                        break;
+                    case 3:
+                        view = new AdminView(currentUser);
+                        break;
+                    default:
+                        break;
+                }
+                view.ActionHandle();
             }
             catch (Exception e)
             {

@@ -18,18 +18,40 @@ namespace Display.Views
         }
         public virtual void ShowAvaliableCommands()
         {
+            Console.WriteLine("0. Exit");
             Console.WriteLine("1. Sales");
+        }
+        public virtual void ActionHandle()
+        {
+            ShowAvaliableCommands();
+            Console.Write("> ");
+            try
+            {
+                int input = int.Parse(Console.ReadLine());
+                if (input == 0)
+                {
+                    Environment.Exit(0);
+                }
+                else if (input == 1)
+                {
+                    SaleHandle();
+                }
+                else Console.WriteLine("Invalid operation");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         public void SaleHandle()
         {
-            Deal deal = new Deal();
-            Product product = new Product();
-            while (true)
+            bool running = true;
+            while (running)
             {
                 Console.WriteLine("1. Search");
                 Console.WriteLine("2. Sale");
                 Console.WriteLine("3. Exit");
-                Console.Write("Your Choice: ");
+                Console.Write("Your choice: ");
                 try
                 {
                     int choice = int.Parse(Console.ReadLine());
@@ -42,7 +64,7 @@ namespace Display.Views
                             SaleItem();
                             break;
                         case 3:
-                            Environment.Exit(0);
+                            running = false;
                             break;
                         default:
                             Console.WriteLine("Invalid Option!");

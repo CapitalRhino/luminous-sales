@@ -17,7 +17,96 @@ namespace Display.Views
         public override void ShowAvaliableCommands()
         {
             base.ShowAvaliableCommands();
-            Console.WriteLine("3. User Managment");
+            Console.WriteLine("4. User Managment");
+        }
+        public override void ActionHandle()
+        {
+            ShowAvaliableCommands();
+            Console.Write("> ");
+            try
+            {
+                int input = int.Parse(Console.ReadLine());
+                if (input == 0)
+                {
+                    Environment.Exit(0);
+                }
+                else if (input == 1)
+                {
+                    SaleHandle();
+                }
+                else if (input == 2)
+                {
+                    ManageHandle();
+                }
+                else if (input == 3)
+                {
+                    AdminHandle();
+                }
+                else Console.WriteLine("Invalid operation");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public void AdminHandle()
+        {
+            bool running = true;
+            while (running)
+            {
+                Console.WriteLine("1. GetAll");
+                Console.WriteLine("2. Get");
+                Console.WriteLine("3. GetByApproximateName");
+                Console.WriteLine("4. RegisterItem");
+                Console.WriteLine("5. UpdateRole");
+                Console.WriteLine("6. UpdateName");
+                Console.WriteLine("7. UpdatePassword");
+                Console.WriteLine("8. Delete");
+                Console.WriteLine("9. Exit");
+                Console.Write("Your choice: ");
+                try
+                {
+                    int choice = int.Parse(Console.ReadLine());
+                    switch (choice)
+                    {
+                        case 1:
+                            GetAllUsers();
+                            break;
+                        case 2:
+                            Get();
+                            break;
+                        case 3:
+                            GetByApproximateName();
+                            break;
+                        case 4:
+                            RegisterItem();
+                            break;
+                        case 5:
+                            UpdateRole();
+                            break;
+                        case 6:
+                            UpdateName();
+                            break;
+                        case 7:
+                            UpdatePassword();
+                            break;
+                        case 8:
+                            Delete();
+                            break;
+                        case 9:
+                            running = false;
+                            break;
+                        default:
+                            Console.WriteLine("Invalid Option!");
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+
         }
         public void GetAllUsers()
         {
