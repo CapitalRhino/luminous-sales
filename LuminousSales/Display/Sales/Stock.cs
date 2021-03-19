@@ -6,6 +6,6 @@ namespace Display.Sales
 {
     class Stock
     {
-        public void 
+        //public void 
     }
 }

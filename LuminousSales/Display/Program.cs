@@ -1,5 +1,7 @@
 ﻿using Business.Business.UserManagment;
+using Display.Views;
 using Models;
+using Models.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,10 +12,18 @@ namespace Display
     {
         static void Main(string[] args)
         {
-            var a = new InitialSetup.InitialSetup();
-            a.InitialRegistration();
-            var ih = new InputHandler();
-            ih.CommandLineInterface();
+            try
+            {
+                var uc = new UserController();
+                User currentUser = uc.ValidatePassword("admin123");
+                uc = new UserController(currentUser);
+                var cv = new CashierView(currentUser);
+                cv.SaleHandle();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

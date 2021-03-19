@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Business.Business.Sales
 {
-    class ProductController : IController<Product>
+    public class ProductController : IController<Product>
     {
         private LuminousContext context;
         private User currentUser;
@@ -23,15 +23,39 @@ namespace Business.Business.Sales
         }
         public Product Get(int id)
         {
-            return context.Product.Find(id);
+            var item = context.Product.Find(id);
+            if (item != null)
+            {
+                return item;
+            }
+            else
+            {
+                throw new ArgumentException("Product Id not found!");
+            }
         }
         public Product Get(string name)
         {
-            return context.Product.FirstOrDefault(p => p.Name == name);
+            var item = context.Product.FirstOrDefault(p => p.Name == name);
+            if (item != null)
+            {
+                return item;
+            }
+            else
+            {
+                throw new ArgumentException("Product name not found!");
+            }
         }
         public ICollection<Product> GetByApproximateName(string name)
         {
-            return context.Product.Where(u => u.Name.Contains(name)).ToList();
+            var items = context.Product.Where(u => u.Name.Contains(name)).ToList();
+            if (items.Any())
+            {
+                return items;
+            }
+            else
+            {
+                throw new ArgumentException("No products added in the database!");
+            }
         }
         public void AddItem(string name, double price)
         {
