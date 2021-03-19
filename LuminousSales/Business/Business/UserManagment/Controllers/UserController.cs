@@ -33,12 +33,13 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
-        public void CheckIfUserEverCreated()
+        public bool CheckIfUserEverCreated()
         {
-            if (!context.User.ToList().Any())
+            if (context.User.ToList().Any())
             {
-                throw new ArgumentException("No users in the database!");
+                return false;
             }
+            return true;
         }
         public User Get(int id)
         {
