@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Business.UserManagment;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -28,7 +29,23 @@ namespace Display.InitialSetup
         }
         public void InitialRegistration()
         {
-            InitialUserInput();
+            var uc = new UserController();
+            try
+            {
+                if (uc.CheckIfUserEverCreated())
+                {
+
+                }
+                else
+                {
+                    uc.RegisterItem(InitialUserInput()[0], InitialUserInput()[1]);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
         }
     }
 }

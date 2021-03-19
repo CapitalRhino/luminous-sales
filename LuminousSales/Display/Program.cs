@@ -12,6 +12,8 @@ namespace Display
         {
             var a = new InitialSetup.InitialSetup();
             a.InitialRegistration();
+            var ih = new InputHandler();
+            ih.CommandLineInterface();
         }
     }
 }
