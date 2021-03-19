@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Business.Business.UserManagment.Controllers
 {
-    class RoleController : IReadOnlyController<Role>
+   public class RoleController : IReadOnlyController<Role>
     {
         private LuminousContext context;
         private User currentUser;

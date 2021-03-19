@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Display.Views
 {
-    class BaseView
+    public class BaseView
     {
         ProductController productctrl;
         DealController dealctrl;

@@ -27,7 +27,7 @@ namespace Business.Business.Sales
             }
             else
             {
-                throw new InvalidOperationException("Cannot return all stocks!");
+                throw new ArgumentException("Cannot return all stocks!");
             }
              
         }
@@ -40,7 +40,7 @@ namespace Business.Business.Sales
             }
             else
             {
-                throw new InvalidOperationException("Cannot get stock!");
+                throw new ArgumentException("Cannot get stock!");
             }
         }
 
@@ -105,7 +105,7 @@ namespace Business.Business.Sales
 
         public void Delete(int id)
         {
-            if (currentUser.RoleId > 1)
+            if (currentUser.RoleId == 3 )
             {
                 var user = Get(id);
                 if (user != null)
