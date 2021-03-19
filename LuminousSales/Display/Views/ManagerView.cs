@@ -40,7 +40,7 @@ namespace Display.Views
 
             try
             { 
-                Console.WriteLine("Getting stock id...");
+                Console.WriteLine("Enter stock id...");
                 id = int.Parse(Console.ReadLine());
                 stockctrl.Get(id);
                
@@ -58,8 +58,9 @@ namespace Display.Views
             try
             {
                 Console.WriteLine("Getting stock by time...");
-                
+                Console.WriteLine("Enter start time: ");
                 startTime = new DateTime();
+                Console.WriteLine("Enter end time: ");
                 endTime = new DateTime();
                 stockctrl.GetByTime(startTime, endTime);
 
@@ -76,7 +77,9 @@ namespace Display.Views
             try
             {
                 Console.WriteLine("Adding stock by product id...");
+                Console.WriteLine("Enter product id: ");
                 productId = int.Parse(Console.ReadLine());
+                Console.WriteLine("Enter stock amount:");
                 amount = double.Parse(Console.ReadLine());
                 stockctrl.Add(productId, amount);
             }
@@ -92,6 +95,7 @@ namespace Display.Views
             try
             {
                 Console.WriteLine("Adding stock by product name...");
+                Console.WriteLine("Enter product name: ");
                 productName = Console.ReadLine();
                 amount = double.Parse(Console.ReadLine());
                 stockctrl.Add(productName, amount);
@@ -108,6 +112,7 @@ namespace Display.Views
             try
             {
                 Console.WriteLine("Deleting stock");
+                Console.WriteLine("Enter deal id: ");
                 id = int.Parse(Console.ReadLine());
                 dealctrl.Delete(id);
             }
