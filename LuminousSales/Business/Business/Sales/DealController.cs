@@ -16,11 +16,11 @@ namespace Business.Business.Sales
         {
             this.currentUser = currentUser;
         }
-        public void Add(int productId, double Amount)
+        public void Add(int productId, double Amount, DateTime time)
         {
             if (Amount > 0)
             {
-                var deal = new Deal(currentUser.Id, productId, Amount);
+                var deal = new Deal(currentUser.Id, productId, Amount, time);
                 context.Deal.Add(deal);
                 context.SaveChanges();
             }
@@ -30,17 +30,16 @@ namespace Business.Business.Sales
             }
         }
 
-        public void Add(string productName, double Amount)
+        public void Add(string productName, double Amount, DateTime time)
         {
             if (Amount > 0)
             {
                 productCtrl = new ProductController(currentUser);
                 var productId = productCtrl.Get(productName).Id;
-                var deal = new Deal(currentUser.Id, productId, Amount);
+                var deal = new Deal(currentUser.Id, productId, Amount, time);
                 context.Deal.Add(deal);
                 context.SaveChanges();
             }
-
             else
             {
                 throw new ArgumentException("Amount cannot be negative");

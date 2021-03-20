@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -15,11 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Business\Business.csproj" />
     <ProjectReference Include="..\Models\Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Sales\" />
-    <Folder Include="UserManagment\" />
   </ItemGroup>
 
 </Project>

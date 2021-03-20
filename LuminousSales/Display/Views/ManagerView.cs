@@ -22,24 +22,27 @@ namespace Display.Views
         }
         public override void ActionHandle()
         {
-            ShowAvaliableCommands();
-            Console.Write("> ");
             try
             {
-                int input = int.Parse(Console.ReadLine());
-                if (input == 0)
+                while (true)
                 {
-                    Environment.Exit(0);
+                    ShowAvaliableCommands();
+                    Console.Write("> ");
+                    int input = int.Parse(Console.ReadLine());
+                    if (input == 0)
+                    {
+                        Environment.Exit(0);
+                    }
+                    else if (input == 1)
+                    {
+                        SaleHandle();
+                    }
+                    else if (input == 2)
+                    {
+                        ManageHandle();
+                    }
+                    else Console.WriteLine("Invalid operation");
                 }
-                else if (input == 1)
-                {
-                    SaleHandle();
-                }
-                else if (input == 2)
-                {
-                    ManageHandle();
-                }
-                else Console.WriteLine("Invalid operation");
             }
             catch (Exception e)
             {
@@ -51,13 +54,15 @@ namespace Display.Views
             bool running = true;
             while (running)
             {
+                Console.WriteLine();
+                Console.WriteLine("Stock Managment");
                 Console.WriteLine("1. GetAll");
                 Console.WriteLine("2. Get");
                 Console.WriteLine("3. GetByTime");
                 Console.WriteLine("4. Add");
                 Console.WriteLine("5. Delete");
-                Console.WriteLine("6. Exit");
-                Console.Write("Your choice: ");
+                Console.WriteLine("6. Back");
+                Console.Write("> ");
                 try
                 {
                     int choice = int.Parse(Console.ReadLine());
@@ -97,11 +102,11 @@ namespace Display.Views
         {
             try
             {
-               Console.Write("Getting all stock...");
-                
+               Console.WriteLine("Getting all stock...");
+                Console.WriteLine("ID - Product ID - Amount - Time");
                 foreach (var item in stockctrl.GetAll())
                 {
-                    Console.WriteLine($"{item.Id} {item.ProductId} {item.Amount} ");
+                    Console.WriteLine($"{item.Id} - {item.ProductId} - {item.Amount} - {item.Time}");
                 }
             }
             catch (Exception e)
@@ -119,7 +124,9 @@ namespace Display.Views
             { 
                 Console.Write("Enter stock id: ");
                 int id = int.Parse(Console.ReadLine());
-                stockctrl.Get(id);
+                var result = stockctrl.Get(id);
+                Console.WriteLine("ID - Product ID - Amount - Time");
+                Console.WriteLine($"{result.Id} - {result.ProductId} - {result.Amount} - {result.Time}");
                
             }
             catch (Exception e)
@@ -135,11 +142,16 @@ namespace Display.Views
             try
             {
                 Console.WriteLine("Getting stock by time...");
-                Console.WriteLine("Enter start time: ");
+                Console.Write("Enter start time: ");
                 DateTime startTime = DateTime.Parse(Console.ReadLine());
-                Console.WriteLine("Enter end time: ");
+                Console.Write("Enter end time: ");
                 DateTime endTime = DateTime.Parse(Console.ReadLine());
-                stockctrl.GetByTime(startTime, endTime);
+                Console.WriteLine("ID - Product ID - Amount - Time");
+                foreach (var item in stockctrl.GetByTime(startTime, endTime))
+                {
+                    Console.WriteLine($"{item.Id} - {item.ProductId} - {item.Amount} - {item.Time}");
+                }
+
             }
             catch (Exception e)
             {
@@ -151,19 +163,19 @@ namespace Display.Views
         {
             try
             {
-                Console.WriteLine("Adding stock by product id...");
+                Console.WriteLine("Adding stock by product id or name...");
                 Console.Write("Enter product ID or name: ");
                 string product = Console.ReadLine();
-                Console.Write("Enter stock amount:");
+                Console.Write("Enter stock amount: ");
                 double amount = double.Parse(Console.ReadLine());
                 bool result = int.TryParse(product, out int productId);
                 if (result)
                 {
-                    stockctrl.Add(productId, amount);
+                    stockctrl.Add(productId, amount, DateTime.Now);
                 }
                 else
                 {
-                    stockctrl.Add(product, amount);
+                    stockctrl.Add(product, amount, DateTime.Now);
                 }
             }
             catch (Exception e)
@@ -178,9 +190,9 @@ namespace Display.Views
             try
             {
                 Console.WriteLine("Deleting stock...");
-                Console.Write("Enter deal id: ");
+                Console.Write("Enter stock id: ");
                 int id = int.Parse(Console.ReadLine());
-                dealctrl.Delete(id);
+                stockctrl.Delete(id);
             }
             catch (Exception e)
             {

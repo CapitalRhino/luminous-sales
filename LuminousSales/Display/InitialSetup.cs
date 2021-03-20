@@ -1,9 +1,10 @@
 ﻿using Business.Business.UserManagment;
+using Business.Business.UserManagment.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Display.InitialSetup
+namespace Display
 {
     public class InitialSetup
     {
@@ -11,9 +12,8 @@ namespace Display.InitialSetup
         {
 
         }
-        public string[] InitialUserInput()
+        public static void InitialUserInput(out string userName, out string password)
         {
-            string userName = "", password = "";
             try
             {
                 Console.Write("Enter username: ");
@@ -23,13 +23,13 @@ namespace Display.InitialSetup
             }
             catch (Exception e)
             {
+                userName = string.Empty;
+                password = string.Empty;
                 Console.WriteLine(e.Message);
             }
-            return new string[] { userName, password };
         }
-        public void InitialRegistration()
+        public static void InitialRegistration(UserController uc)
         {
-            var uc = new UserController();
             try
             {
                 if (uc.CheckIfUserEverCreated())
@@ -38,7 +38,11 @@ namespace Display.InitialSetup
                 }
                 else
                 {
-                    uc.RegisterItem(InitialUserInput()[0], InitialUserInput()[1]);
+                    RoleController rc = new RoleController();
+                    rc.CreateInitialRoles();
+                    string userName, password;
+                    InitialUserInput(out userName, out password);
+                    uc.RegisterItem(userName, password);
                 }
             }
             catch (Exception e)

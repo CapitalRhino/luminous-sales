@@ -9,7 +9,7 @@ namespace Display.Views
 {
     public class BaseView
     {
-        ProductController productctrl;
+        internal ProductController productctrl;
         DealController dealctrl;
         public BaseView(User currentUser)
         {
@@ -18,25 +18,30 @@ namespace Display.Views
         }
         public virtual void ShowAvaliableCommands()
         {
+            Console.WriteLine();
+            Console.WriteLine("=== MAIN MENU ===");
             Console.WriteLine("0. Exit");
             Console.WriteLine("1. Sales");
         }
         public virtual void ActionHandle()
         {
-            ShowAvaliableCommands();
-            Console.Write("> ");
             try
             {
-                int input = int.Parse(Console.ReadLine());
-                if (input == 0)
+                while (true)
                 {
-                    Environment.Exit(0);
+                    ShowAvaliableCommands();
+                    Console.Write("> ");
+                    int input = int.Parse(Console.ReadLine());
+                    if (input == 0)
+                    {
+                        Environment.Exit(0);
+                    }
+                    else if (input == 1)
+                    {
+                        SaleHandle();
+                    }
+                    else Console.WriteLine("Invalid operation");
                 }
-                else if (input == 1)
-                {
-                    SaleHandle();
-                }
-                else Console.WriteLine("Invalid operation");
             }
             catch (Exception e)
             {
@@ -48,10 +53,12 @@ namespace Display.Views
             bool running = true;
             while (running)
             {
+                Console.WriteLine();
+                Console.WriteLine("Deal Managment");
                 Console.WriteLine("1. Search");
                 Console.WriteLine("2. Sale");
-                Console.WriteLine("3. Exit");
-                Console.Write("Your choice: ");
+                Console.WriteLine("3. Back");
+                Console.Write("> ");
                 try
                 {
                     int choice = int.Parse(Console.ReadLine());
@@ -83,12 +90,12 @@ namespace Display.Views
             try
             {
                 Console.Write("Search item: ");
-            string search = Console.ReadLine();
-            ICollection<Product> productsFound = productctrl.GetByApproximateName(search).ToArray();
-            foreach (var item in productsFound)
-            {
-                Console.WriteLine($"{item.Id} {item.Name} {item.Price} {item.AmountInStock}");
-            }
+                string search = Console.ReadLine();
+                ICollection<Product> productsFound = productctrl.GetByApproximateName(search).ToArray();
+                foreach (var item in productsFound)
+                {
+                    Console.WriteLine($"{item.Id} {item.Name} {item.Price} {item.AmountInStock}");
+                }
             }
             catch (Exception e)
             {
@@ -103,19 +110,19 @@ namespace Display.Views
                 Console.Write("Type in item id or name: ");
                 string itemInput = Console.ReadLine();
                 int itemId;
-                if (Int32.TryParse(itemInput, out itemId))
+                if (int.TryParse(itemInput, out itemId))
                 {
                     var productToAdd = productctrl.Get(itemId);
                     Console.Write("Amount: ");
                     double amount = double.Parse(Console.ReadLine());
-                    dealctrl.Add(itemId, amount);
+                    dealctrl.Add(itemId, amount, DateTime.Now);
                 }
                 else
                 {
                     var productToAdd = productctrl.Get(itemInput);
                     Console.Write("Amount: ");
                     double amount = double.Parse(Console.ReadLine());
-                    dealctrl.Add(itemInput, amount);
+                    dealctrl.Add(itemInput, amount, DateTime.Now);
                 }
             }
             catch (Exception e)
