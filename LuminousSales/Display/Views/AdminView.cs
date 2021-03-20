@@ -10,6 +10,10 @@ namespace Display.Views
     public class AdminView : ManagerView
     {
         User currentUser;
+
+        /// <summary>
+        /// Constructor that accepts a user object.
+        /// <summary>
         public AdminView(User currentUser) : base(currentUser)
         {
             this.currentUser = currentUser;
@@ -18,7 +22,7 @@ namespace Display.Views
         /// Shows the avaliable to the user commands.
         /// </summary>
         /// <remarks>
-        /// The main menu.
+        /// The main menu. Inherited from ManagerView and adds Admin-specific menu.
         /// </remarks>
         public override void ShowAvaliableCommands()
         {
@@ -28,6 +32,10 @@ namespace Display.Views
         /// <summary>
         /// Asks the user to choose which group of action to use.
         /// </summary>
+        /// <remarks>
+        /// A choice is given by entering a number from the given list.
+        /// Inherited from ManagerView and expanded with the Admin menu.
+        /// </remarks>
         public override void ActionHandle()
         {
             try
@@ -207,8 +215,9 @@ namespace Display.Views
                 Console.WriteLine(e.Message);
             }
         }
+
         /// <summary>
-        /// Lists all users which match the search term from the database.
+        /// Lists all users who match the search term from the database.
         /// </summary>
         public void GetByApproximateName()
         {
@@ -241,7 +250,8 @@ namespace Display.Views
                 string username = Console.ReadLine();
                 Console.Write("Enter password: ");
                 string password = Console.ReadLine();
-                Console.Write("Enter role ID or name (default 1, Cashier): ");
+                Console.WriteLine("Avaliable roles: 1 - Cashier, 2 - Manager, 3 - Admin");
+                Console.Write("Enter role ID or name: ");
                 string role = Console.ReadLine();
                 bool result = int.TryParse(role, out int roleId);
                 if (role == null)
@@ -268,27 +278,38 @@ namespace Display.Views
         /// <summary>
         /// Changes the role given to a specific user.
         /// </summary>
+        /// <remarks>
+        /// Asks for a user's ID or name and the new role ID or name.
+        /// </remarks>
         public void UpdateRole()
         {
             try
             {
                 UserController userctl = new UserController(currentUser);
                 Console.WriteLine("Updating role...");
-                Console.Write("Enter username: ");
+                Console.Write("Enter username or user ID: ");
                 string username = Console.ReadLine();
                 Console.Write("Enter new role ID or name: ");
                 string role = Console.ReadLine();
-                bool result = int.TryParse(role, out int roleId);
-                if (result)
+                bool userResult = int.TryParse(username, out int userId);
+                bool roleResult = int.TryParse(role, out int roleId);
+                if (userResult && roleResult)
+                {
+                    userctl.UpdateRole(userId, roleId);
+                }
+                else if (userResult && !roleResult)
+                {
+                    userctl.UpdateRole(userId, role);
+                }
+                else if (!userResult && roleResult)
                 {
                     userctl.UpdateRole(username, roleId);
-                    Console.WriteLine("Updated role successfully");
                 }
                 else
                 {
                     userctl.UpdateRole(username, role);
-                    Console.WriteLine("Updated role successfully");
                 }
+                Console.WriteLine("Updated role successfully");
             }
             catch (Exception e)
             {
@@ -384,7 +405,7 @@ namespace Display.Views
             }
         }
         /// <summary>
-        /// Add product to the database.
+        /// Adds a product to the database.
         /// </summary>
         public void AddItem()
         {

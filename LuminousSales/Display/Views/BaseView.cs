@@ -12,11 +12,28 @@ namespace Display.Views
         internal ProductController productctrl;
         private DealController dealctrl;
         internal User currentUser;
+
+        /// <summary>
+        /// Constructor that accepts a user object.
+        /// <summary>
+        /// <remarks>
+        /// User object is used for stock and deal checking.
+        /// Initialises stock and deal controllers.
+        /// </remarks>
         public BaseView(User currentUser)
         {
             this.currentUser = currentUser;
             this.dealctrl = new DealController(currentUser);
+            this.productctrl = new ProductController(currentUser);
         }
+
+        /// <summary>
+        /// Shows all available commands.
+        /// </summary>
+        /// <remarks>
+        /// Includes only the basic functions of the program.
+        /// The main menu.
+        /// </remarks>
         public virtual void ShowAvaliableCommands()
         {
             Console.WriteLine();
@@ -25,6 +42,14 @@ namespace Display.Views
             Console.WriteLine();
             Console.WriteLine("1. Sales");
         }
+
+        /// <summary>
+        /// Asks the user to choose which group of action to use.
+        /// </summary>
+        /// <remarks>
+        /// A choice is given by entering a number from the given list.
+        /// It's expanded by its inheritors.
+        /// </remarks>
         public virtual void ActionHandle()
         {
             try
@@ -51,6 +76,10 @@ namespace Display.Views
                 Console.WriteLine(e.Message);
             }
         }
+
+        /// <summary>
+        /// Selection menu with base actions.
+        /// </summary>
         public void SaleHandle()
         {
             bool running = true;
@@ -90,6 +119,10 @@ namespace Display.Views
             }
             
         }
+
+        /// <summary>
+        /// Lists all products which match the search term from the database.
+        /// </summary>
         private void SearchItem()
         {
             try
@@ -97,9 +130,10 @@ namespace Display.Views
                 productctrl = new ProductController(currentUser);
                 Console.Write("Search item: ");
                 string search = Console.ReadLine();
+                Console.WriteLine("Product ID - Name - Price - Amount");
                 foreach (var item in productctrl.GetByApproximateName(search).ToList())
                 {
-                    Console.WriteLine($"{item.Id} {item.Name} {item.Price} {item.AmountInStock}");
+                    Console.WriteLine($"{item.Id} - {item.Name} - {item.Price} - {item.AmountInStock}");
                 }
             }
             catch (Exception e)
@@ -108,10 +142,15 @@ namespace Display.Views
                 Console.WriteLine(e.Message);
             }
         }
+
+        /// <summary>
+        /// Sells products. Asks which product and the quantity sold. Prints a summary in the end.
+        /// </summary>
         private void SaleItem()
         {
             try
             {
+                productctrl = new ProductController(currentUser);
                 List<Product> check = new List<Product>();
                 bool endTyped = false;
                 while (!endTyped)
@@ -141,14 +180,16 @@ namespace Display.Views
                     else
                     {
                         endTyped = true;
+                        Console.WriteLine();
                         Console.WriteLine("Check");
                         double sum = 0;
+                        check.Reverse();
                         var lastdeals = dealctrl.GetAll().OrderByDescending(x => x.Id).ToArray();
-                        for (int i = 0; i < check.Count; i++)
+                        for (int i = check.Count - 1; i >= 0; i--)
                         {
                             sum += check[i].Price * lastdeals[i].Amount;
                             int rowNum = i + 1;
-                            Console.WriteLine($"{rowNum} {check[i].Name} {check[i].Price}x{lastdeals[i].Amount}");
+                            Console.WriteLine($"{rowNum}. {check[i].Name} - {check[i].Price}x{lastdeals[i].Amount}");
                         }
                         Console.WriteLine($"Total: {sum}");
                     }
@@ -156,7 +197,6 @@ namespace Display.Views
             }
             catch (Exception e)
             {
-
                 Console.WriteLine(e.Message);
             }
         }

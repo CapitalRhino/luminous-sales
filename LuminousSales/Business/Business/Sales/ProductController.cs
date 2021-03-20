@@ -359,22 +359,15 @@ namespace Business.Business.Sales
 
         public void RemoveAmount(int productId, double Amount)
         {
-            if (currentUser.RoleId > 1)
+            var product = Get(productId);
+            if (product != null)
             {
-                var product = Get(productId);
-                if (product != null)
-                {
-                    product.AmountInStock -= Amount;
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new ArgumentException("Product id not valid!");
-                }
+                product.AmountInStock -= Amount;
+                context.SaveChanges();
             }
             else
             {
-                throw new ArgumentException("Insufficient Role!");
+                throw new ArgumentException("Product id not valid!");
             }
         }
 
