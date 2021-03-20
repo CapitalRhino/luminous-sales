@@ -15,6 +15,7 @@ namespace Display
             try
             {
                 var uc = new UserController();
+                InitialSetup.InitialRegistration(uc);
                 Console.Write("Enter password: ");
                 User currentUser = uc.ValidatePassword(Console.ReadLine());
                 uc = new UserController(currentUser);
@@ -33,6 +34,7 @@ namespace Display
                     default:
                         break;
                 }
+                Console.WriteLine("Luminous Sales v0.1");
                 view.ActionHandle();
             }
             catch (Exception e)

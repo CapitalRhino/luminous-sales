@@ -17,32 +17,35 @@ namespace Display.Views
         public override void ShowAvaliableCommands()
         {
             base.ShowAvaliableCommands();
-            Console.WriteLine("4. User Managment");
+            Console.WriteLine("3. Administration");
         }
         public override void ActionHandle()
         {
-            ShowAvaliableCommands();
-            Console.Write("> ");
             try
             {
-                int input = int.Parse(Console.ReadLine());
-                if (input == 0)
+                while (true)
                 {
-                    Environment.Exit(0);
+                    ShowAvaliableCommands();
+                    Console.Write("> ");
+                    int input = int.Parse(Console.ReadLine());
+                    if (input == 0)
+                    {
+                        Environment.Exit(0);
+                    }
+                    else if (input == 1)
+                    {
+                        SaleHandle();
+                    }
+                    else if (input == 2)
+                    {
+                        ManageHandle();
+                    }
+                    else if (input == 3)
+                    {
+                        AdminHandle();
+                    }
+                    else Console.WriteLine("Invalid operation");
                 }
-                else if (input == 1)
-                {
-                    SaleHandle();
-                }
-                else if (input == 2)
-                {
-                    ManageHandle();
-                }
-                else if (input == 3)
-                {
-                    AdminHandle();
-                }
-                else Console.WriteLine("Invalid operation");
             }
             catch (Exception e)
             {
@@ -54,16 +57,22 @@ namespace Display.Views
             bool running = true;
             while (running)
             {
+                Console.WriteLine();
+                Console.WriteLine("User Managment");
                 Console.WriteLine("1. GetAll");
                 Console.WriteLine("2. Get");
                 Console.WriteLine("3. GetByApproximateName");
-                Console.WriteLine("4. RegisterItem");
-                Console.WriteLine("5. UpdateRole");
-                Console.WriteLine("6. UpdateName");
+                Console.WriteLine("4. Register user");
+                Console.WriteLine("5. Update Role");
+                Console.WriteLine("6. Update username");
                 Console.WriteLine("7. UpdatePassword");
-                Console.WriteLine("8. Delete");
-                Console.WriteLine("9. Exit");
-                Console.Write("Your choice: ");
+                Console.WriteLine("8. Delete User");
+                Console.WriteLine();
+                Console.WriteLine("Product Managment");
+                Console.WriteLine("9. AddItem");
+                Console.WriteLine();
+                Console.WriteLine("10. Back");
+                Console.Write("> ");
                 try
                 {
                     int choice = int.Parse(Console.ReadLine());
@@ -94,6 +103,9 @@ namespace Display.Views
                             Delete();
                             break;
                         case 9:
+                            AddItem();
+                            break;
+                        case 10:
                             running = false;
                             break;
                         default:
@@ -280,6 +292,22 @@ namespace Display.Views
                 {
                     userctl.Delete(user);
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public void AddItem()
+        {
+            try
+            {
+                Console.WriteLine("Adding item to database...");
+                Console.Write("Enter product name: ");
+                string product = Console.ReadLine();
+                Console.Write("Enter price: ");
+                double price = double.Parse(Console.ReadLine());
+                productctrl.AddItem(product, price);
             }
             catch (Exception e)
             {

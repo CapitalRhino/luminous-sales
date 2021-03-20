@@ -13,11 +13,12 @@ namespace Data.Base
         {
 
         }
-        protected BaseSales(int UserId, int ProductId, double Amount)
+        protected BaseSales(int UserId, int ProductId, double Amount, DateTime Time)
         {
             this.UserId = UserId;
             this.ProductId = ProductId;
             this.Amount = Amount;
+            this.Time = Time;
         }
         [Key]
         public int Id { get; set; }
