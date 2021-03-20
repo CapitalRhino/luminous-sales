@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Business.Business.UserManagment
 {
+    /// <summary>
+    /// Controller interface.
+    /// </summary>
     interface IController<T>
     {
         ICollection<T> GetAll();

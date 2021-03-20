@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Business.Business.Sales
 {
+    /// <summary>
+    /// Interface used for Sale Controllers such as DealController and StockController
+    /// </summary>
     interface ISalesController<T>
     {
         ICollection<T> GetAll();

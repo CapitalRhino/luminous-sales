@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Business.Business.Interfaces
 {
+    /// <summary>
+    /// Interface used only for read-only Controllers such as RoleController
+    /// </summary>
     interface IReadOnlyController<T>
     {
         ICollection<T> GetAll();
