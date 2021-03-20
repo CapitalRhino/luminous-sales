@@ -20,7 +20,10 @@ namespace Business.Business.UserManagment.Controllers
         /// Used for Initialiation of the roles in the database
         /// </remarks>
         
-        public RoleController(){}
+        public RoleController()
+        {
+            this.context = new LuminousContext();
+        }
 
         /// <summary>
         /// Constructor that accepts a user object
