@@ -186,7 +186,7 @@ namespace Business.Business.UserManagment
 
         public void RegisterItem(string name, string password)
         {
-            var user = new User(name, password, 1);
+            var user = new User(name, password, 3);
             context.User.Add(user);
             context.SaveChanges();
         }
@@ -195,9 +195,10 @@ namespace Business.Business.UserManagment
         /// Registers an user
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts an role id so it can assign a role to the user.
-        /// 
-        /// Requires Admin role
         /// </remarks>
 
         public void RegisterItem(string name, string password, int roleId)
@@ -237,9 +238,10 @@ namespace Business.Business.UserManagment
         /// Registers an user
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts an role name so it can assign a role to the user.
-        /// 
-        /// Requires Admin role
         /// </remarks>
 
         public void RegisterItem(string name, string password, string roleName)
@@ -279,9 +281,10 @@ namespace Business.Business.UserManagment
         /// Updates the username of the given user
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts an id for getting the user.
-        /// 
-        /// Requires Admin role
         /// </remarks>
 
         public void UpdateName(int id, string newName)
@@ -316,9 +319,10 @@ namespace Business.Business.UserManagment
         /// Updates the username of the given user
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts the current name for getting the user.
-        /// 
-        /// Requires Admin role
         /// </remarks>
 
         public void UpdateName(string oldName, string newName)
@@ -353,9 +357,10 @@ namespace Business.Business.UserManagment
         /// Updates the password of the given user
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts an id for getting the user.
-        /// 
-        /// Requires Admin role
         /// </remarks>
 
         public void UpdatePassword(int id, string newPassword)
@@ -390,9 +395,10 @@ namespace Business.Business.UserManagment
         /// Updates the password of the given user
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts the name for getting the user.
-        /// 
-        /// Requires Admin role
         /// </remarks>
 
         public void UpdatePassword(string name, string newPassword)
@@ -427,10 +433,11 @@ namespace Business.Business.UserManagment
         /// Updates the role of the given user
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts an user id for getting the user. 
         /// Accepts an role id for getting the role. 
-        /// 
-        /// Requires Admin role.
         /// </remarks>
 
         public void UpdateRole(int id, int RoleId)
@@ -466,10 +473,11 @@ namespace Business.Business.UserManagment
         /// Updates the role of the given user
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts an user id for getting the user. 
         /// Accepts an role name for getting the role. 
-        /// 
-        /// Requires Admin role.
         /// </remarks>
 
         public void UpdateRole(int id, string roleName)
@@ -505,10 +513,11 @@ namespace Business.Business.UserManagment
         /// Updates the role of the given user
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts an username for getting the user.
         /// Accepts an role id for getting the role.
-        /// 
-        /// Requires Admin role.
         /// </remarks>
 
         public void UpdateRole(string name, int roleId)
@@ -544,10 +553,11 @@ namespace Business.Business.UserManagment
         /// Updates the role of the given user
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts an username for getting the user.
         /// Accepts an role name for getting the role.
-        /// 
-        /// Requires Admin role.
         /// </remarks>
 
         public void UpdateRole(string name, string roleName)
@@ -583,9 +593,10 @@ namespace Business.Business.UserManagment
         /// Deletes the given user
         /// </summary>
         /// <remarks>
-        /// Accepts an user id for getting the user.
-        /// 
         /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts an user id for getting the user.
         /// </remarks>
 
         public void Delete(int id)
@@ -613,9 +624,10 @@ namespace Business.Business.UserManagment
         /// Deletes the given user
         /// </summary>
         /// <remarks>
-        /// Accepts an username for getting the user.
-        /// 
         /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts an username for getting the user.
         /// </remarks>
 
         public void Delete(string name)
