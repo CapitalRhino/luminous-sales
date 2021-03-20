@@ -228,7 +228,7 @@ namespace Business.Business.Sales
         /// Requires Manager Role or better.
         /// </remarks>
         /// <remarks>
-        /// Accepts product id for getting the product
+        /// Accepts deal id for getting the product
         /// </remarks>
 
         public void Delete(int id)

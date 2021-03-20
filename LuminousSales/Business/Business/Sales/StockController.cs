@@ -56,7 +56,7 @@ namespace Business.Business.Sales
         /// Requires no special roles.
         /// </remarks>
         /// <returns>
-        /// Returns a ICollection of all Deals.
+        /// Returns a ICollection of all Stocks.
         /// </returns>
 
         public ICollection<Stock> GetAll()
@@ -79,7 +79,7 @@ namespace Business.Business.Sales
         /// Requires Manager role or better.
         /// </remarks>
         /// <returns>
-        /// Returns an object of the role with the given Id. 
+        /// Returns an object of the stock with the given Id. 
         /// </returns>
 
         public Stock Get(int id)
@@ -116,6 +116,17 @@ namespace Business.Business.Sales
             }
         }
 
+        /// <summary>
+        /// Gets stocks made by certain user.
+        /// </summary>
+        /// <remarks>
+        /// Accepts user id for getting the user.
+        /// Requires Admin role.
+        /// </remarks>
+        /// <returns>
+        /// Returns an Collection of all the stocks in the criteria. 
+        /// </returns>
+
         public ICollection<Stock> GetByUser(int id)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -136,6 +147,17 @@ namespace Business.Business.Sales
             }
         }
 
+        /// <summary>
+        /// Gets stocks made by certain user.
+        /// </summary>
+        /// <remarks>
+        /// Accepts username for getting the user.
+        /// Requires Admin role.
+        /// </remarks>
+        /// <returns>
+        /// Returns an Collection of all the stocks in the criteria. 
+        /// </returns>
+
         public ICollection<Stock> GetByUser(string username)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -155,6 +177,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient role!");
             }
         }
+
+        /// <summary>
+        /// Adds Stock to the database.
+        /// </summary>
+        /// <remarks>
+        /// Requires Manager role or better.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts product id for getting the product, amount sold and time of transaction.
+        /// </remarks>
 
         public void Add(int productId, double Amount, DateTime time)
         {
@@ -178,6 +210,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient role!");
             }
         }
+
+        /// <summary>
+        /// Adds Stock to the database.
+        /// </summary>
+        /// <remarks>
+        /// Requires Manager role or better.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts product name for getting the product, amount sold and time of transaction.
+        /// </remarks>
 
         public void Add(string productName, double Amount, DateTime time)
         {
@@ -204,6 +246,16 @@ namespace Business.Business.Sales
             }
              
         }
+
+        /// <summary>
+        /// Deletes Deal from the database.
+        /// </summary>
+        /// <remarks>
+        /// Requires Manager Role or better.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts stock id for getting the product
+        /// </remarks>
 
         public void Delete(int id)
         {
