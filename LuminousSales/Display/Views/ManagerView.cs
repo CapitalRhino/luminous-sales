@@ -16,11 +16,8 @@ namespace Display.Views
         /// <summary>
         /// <remarks>
         /// User object is used for stock and deal checking.
-        /// </remarks>
-        /// <remarks>
         /// Initialises stock and deal controllers.
         /// </remarks>
-
         public ManagerView(User currentUser):base(currentUser)
         {
             stockctrl = new StockController(currentUser);
@@ -32,12 +29,8 @@ namespace Display.Views
        /// </summary>
        /// <remarks>
        /// Inherits all available commands from the base view.
-       /// </remarks>
-       /// <remarks>
        /// The main menu.
        /// </remarks>
-
-
         public override void ShowAvaliableCommands()
         {
             base.ShowAvaliableCommands();
@@ -48,15 +41,10 @@ namespace Display.Views
         /// Asks the user to choose which group of action to use.
         /// </summary>
         /// <remarks>
-        /// If user inputs the digit 1, returns selling handles.
-        /// </remarks>
-        /// <remarks>
-        /// If user inputs the digit 2, returns managing handles.
-        /// </remarks>
-        /// <remarks>
+        /// If user inputs the digit 1, returns selling handles. 
+        /// If user inputs the digit 2, returns managing handles. 
         /// If user inputs something else, the operation is invalid.
         /// </remarks>
-
         public override void ActionHandle()
         {
             try
@@ -93,7 +81,6 @@ namespace Display.Views
         /// <remarks>
         /// Requires role level 2 (Manager).
         /// </remarks>
-
         public void ManageHandle()
         {
             bool running = true;
@@ -104,11 +91,12 @@ namespace Display.Views
                 Console.WriteLine("0. Back");
                 Console.WriteLine();
                 Console.WriteLine("Stock Managment");
-                Console.WriteLine("1. GetAll");
-                Console.WriteLine("2. Get");
-                Console.WriteLine("3. GetByTime");
-                Console.WriteLine("4. Add");
+                Console.WriteLine("1. List all stocks");
+                Console.WriteLine("2. Get stock by ID");
+                Console.WriteLine("3. List stocks by time");
+                Console.WriteLine("4. Add stock");
                 Console.WriteLine("5. Delete");
+                Console.WriteLine("6. List deals by user");
                 Console.Write("> ");
                 try
                 {
@@ -130,6 +118,9 @@ namespace Display.Views
                         case 5:
                             Delete();
                             break;
+                        case 6:
+                            GetByUser();
+                            break;
                         case 0:
                             running = false;
                             break;
@@ -149,7 +140,6 @@ namespace Display.Views
         /// <summary>
         /// Lists all information about stock from the database.
         /// </summary>
-       
         public void GetAll()
         {
             try
@@ -171,8 +161,7 @@ namespace Display.Views
 
         /// <summary>
         /// Lists all registered information about stocks from the database.
-        /// </summary>
-       
+        /// </summary> 
         public void Get()
         {
 
@@ -197,8 +186,6 @@ namespace Display.Views
         /// </summary>
         /// <remarks>
         /// Inputs start time and end time.
-        /// </remarks>
-        /// <remarks>
         /// Lists all information about stocks from the database in real time.
         /// </remarks>
         public void GetByTime()
@@ -228,14 +215,9 @@ namespace Display.Views
         /// </summary>
         /// <remarks>
         /// Entering product name and amount.
-        /// </remarks>
-        /// <remarks>
         /// If the result is true, returns a stock with product id, amount and a real time.
-        /// </remarks>
-        /// <remarks>
         /// Else returns a stock with product name, amount and a real time.
         /// </remarks>
-        
         public void Add()
         {
             try
@@ -265,7 +247,6 @@ namespace Display.Views
         /// <summary>
         /// Deletes a stock from the database.
         /// </summary>
-        
         public void Delete()
         {
             try
@@ -282,5 +263,41 @@ namespace Display.Views
             }
         }
 
+        /// <summary>
+        /// Gets deals by the user who made them.
+        /// </summary>
+        /// <remarks>
+        /// Inputs username or user ID.
+        /// Lists all deals made by a user from the database.
+        /// </remarks>
+        public void GetByUser()
+        {
+            try
+            {
+                Console.WriteLine("Getting stock by time...");
+                Console.Write("Enter username or user ID: ");
+                string input = Console.ReadLine();
+                int.TryParse(input, out int inputId);
+                ICollection<Deal> output;
+                if (inputId != 0)
+                {
+                    output = dealctrl.GetByUser(inputId);
+                }
+                else
+                {
+                    output = dealctrl.GetByUser(input);
+                }
+                Console.WriteLine("Deal ID - Product ID - Amount - Time");
+                foreach (var item in output)
+                {
+                    Console.WriteLine($"{item.Id} - {item.ProductId} - {item.Amount} - {item.Time}");
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
     }
 }
