@@ -14,10 +14,10 @@ namespace Business.Business.UserManagment.Controllers
         private User currentUser;
 
         /// <summary>
-        /// Empty Constructor
+        /// Empty Constructor.
         /// </summary>
         /// <remarks>
-        /// Used for Initialiation of the roles in the database
+        /// Used for Initialiation of the roles in the database.
         /// </remarks>
         
         public RoleController()
@@ -31,10 +31,10 @@ namespace Business.Business.UserManagment.Controllers
         }
 
         /// <summary>
-        /// Constructor that accepts a user object
+        /// Constructor that accepts a user object.
         /// </summary>
         /// <remarks>
-        /// User object is used for role checking
+        /// User object is used for role checking.
         /// </remarks>
         
         public RoleController(User currentUser)
@@ -44,13 +44,15 @@ namespace Business.Business.UserManagment.Controllers
         }
 
         /// <summary>
-        /// Constructor that accepts custom context and a user object
+        /// Constructor that accepts custom context and a user object.
         /// </summary>
         /// <remarks>
-        /// Custom context is mainly used for Unit Testing
-        /// User object is used for role checking
+        /// Custom context is mainly used for Unit Testing.
         /// </remarks>
-        
+        /// <remarks>
+        /// User object is used for role checking.
+        /// </remarks>
+
         public RoleController(User currentUser, LuminousContext context)
         {
             this.context = context;
@@ -58,13 +60,13 @@ namespace Business.Business.UserManagment.Controllers
         }
 
         /// <summary>
-        /// Creates the roles
+        /// Creates the roles.
         /// </summary>
         /// <remarks>
         /// Requires no special roles. Not even an registered user.
         /// </remarks>
         /// <remarks>
-        /// Almost every method of each class checks if the user has suffficient roles for the task
+        /// Almost every method of each class checks if the user has suffficient roles for the task.
         /// </remarks>
 
         public void CreateInitialRoles()
@@ -83,7 +85,7 @@ namespace Business.Business.UserManagment.Controllers
         /// Requires Admin role.
         /// </remarks>
         /// <returns>
-        /// Returns a ICollection of all roles
+        /// Returns a ICollection of all roles.
         /// </returns>
         
         public ICollection<Role> GetAll()

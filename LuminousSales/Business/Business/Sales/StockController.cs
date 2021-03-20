@@ -11,24 +11,54 @@ namespace Business.Business.Sales
 {
     public class StockController : ISalesController<Stock>
     {
-        private LuminousContext context = new LuminousContext();
+        private LuminousContext context;
         private User currentUser;
-        private ProductController productCtrl;
+        private ProductController productctrl;
         private UserController userctrl;
+
+        /// <summary>
+        /// Constructor that accepts a user object
+        /// </summary>
+        /// <remarks>
+        /// User object is used for role checking
+        /// </remarks>
 
         public StockController(User currentUser)
         {
             this.currentUser = currentUser;
-            this.productCtrl = new ProductController(currentUser);
+            this.context = new LuminousContext();
+            this.productctrl = new ProductController(currentUser);
             this.userctrl = new UserController(currentUser);
         }
 
-        public StockController(User currentUser, ProductController productctrl, UserController userctrl)
+        /// <summary>
+        /// Constructor that accepts custom context, ProductController, UserController  and a user object
+        /// </summary>
+        /// <remarks>
+        /// Mainly Used for Unit Teststing
+        /// </remarks>
+        /// <remarks>
+        /// User object is used for role checking
+        /// </remarks>
+
+        public StockController(User currentUser, LuminousContext context ,ProductController productctrl, UserController userctrl)
         {
             this.currentUser = currentUser;
-            this.productCtrl = new ProductController(currentUser);
-            this.userctrl = new UserController(currentUser);
+            this.context = context;
+            this.productctrl = productctrl;
+            this.userctrl = userctrl;
         }
+
+        /// <summary>
+        /// Gets All Stocks
+        /// </summary>
+        /// <remarks>
+        /// Requires no special roles.
+        /// </remarks>
+        /// <returns>
+        /// Returns a ICollection of all Deals.
+        /// </returns>
+
         public ICollection<Stock> GetAll()
         {
             if (currentUser != null || currentUser.RoleId > 1)
@@ -42,6 +72,16 @@ namespace Business.Business.Sales
              
         }
 
+        /// <summary>
+        /// Searches a stocks session by given Id.
+        /// </summary>
+        /// <remarks>
+        /// Requires Manager role or better.
+        /// </remarks>
+        /// <returns>
+        /// Returns an object of the role with the given Id. 
+        /// </returns>
+
         public Stock Get(int id)
         {
             if (currentUser != null || currentUser.RoleId > 1)
@@ -50,9 +90,19 @@ namespace Business.Business.Sales
             }
             else
             {
-                throw new ArgumentException("Cannot get stock!");
+                throw new ArgumentException("Insufficient Roles");
             }
         }
+
+        /// <summary>
+        /// Gets stocks between time periods.
+        /// </summary>
+        /// <remarks>
+        /// Requires Manager role or better.
+        /// </remarks>
+        /// <returns>
+        /// Returns a collection of all the stocks in the criteria. 
+        /// </returns>
 
         public ICollection<Stock> GetByTime(DateTime startTime, DateTime endTime)
         {
@@ -113,7 +163,7 @@ namespace Business.Business.Sales
                 if (Amount > 0)
                 {
                     var stock = new Stock(currentUser.Id, productId, Amount, time);
-                    productCtrl.AddAmount(productId, Amount);
+                    productctrl.AddAmount(productId, Amount);
                     context.Stock.Add(stock);
                     context.SaveChanges();
                 }
@@ -135,10 +185,10 @@ namespace Business.Business.Sales
             {
                 if (Amount > 0)
                 {
-                    productCtrl = new ProductController(currentUser);
-                    var productId = productCtrl.Get(productName).Id;
+                    productctrl = new ProductController(currentUser);
+                    var productId = productctrl.Get(productName).Id;
                     var stock = new Stock(currentUser.Id, productId, Amount, time);
-                    productCtrl.AddAmount(productId, Amount);
+                    productctrl.AddAmount(productId, Amount);
                     context.Stock.Add(stock);
                     context.SaveChanges();
                 }
@@ -162,7 +212,7 @@ namespace Business.Business.Sales
                 var stock = Get(id);
                 if (stock != null)
                 {
-                    productCtrl.RemoveAmount(stock.ProductId, stock.Amount);
+                    productctrl.RemoveAmount(stock.ProductId, stock.Amount);
                     context.Stock.Remove(stock);
                     context.SaveChanges();
                 }

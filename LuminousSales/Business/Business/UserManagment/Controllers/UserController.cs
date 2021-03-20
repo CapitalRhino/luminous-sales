@@ -39,20 +39,17 @@ namespace Business.Business.UserManagment
             this.rolectrl = new RoleController(currentUser);
         }
 
-        /// <summary>
-        /// Constructor that accepts custom context and a user object
+
+        // <summary>
+        /// Constructor that accepts custom context, rolectrl and a user object
         /// </summary>
+        /// <remarks>
+        /// Custom context is mainly used for Unit Testing
+        /// </remarks>
         /// <remarks>
         /// Custom context is mainly used for Unit Testing
         /// User object is used for role checking
         /// </remarks>
-
-        public UserController(User currentUser, LuminousContext context)
-        {
-            this.currentUser = currentUser;
-            this.context = context;
-            this.rolectrl = new RoleController(currentUser);
-        }
 
         public UserController(User currentUser, LuminousContext context, RoleController rolectrl)
         {

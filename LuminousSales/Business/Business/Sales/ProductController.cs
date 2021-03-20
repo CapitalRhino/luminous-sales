@@ -31,23 +31,25 @@ namespace Business.Business.Sales
         /// </summary>
         /// <remarks>
         /// Custom context is mainly used for Unit Testing
+        /// </remarks>
+        /// <remarks>
         /// User object is used for role checking
         /// </remarks>
 
-        public ProductController(LuminousContext context, User currenUser)
+        public ProductController(User currenUser, LuminousContext context)
         {
             this.currentUser = currenUser;
             this.context = context;
         }
 
         /// <summary>
-        /// Gets All Roles
+        /// Gets All Products
         /// </summary>
         /// <remarks>
         /// Requires no special roles.
         /// </remarks>
         /// <returns>
-        /// Returns a ICollection of all roles.
+        /// Returns a ICollection of all products.
         /// </returns>
 
         public ICollection<Product> GetAll()
@@ -56,7 +58,7 @@ namespace Business.Business.Sales
         }
 
         /// <summary>
-        /// Searches the role by given Id.
+        /// Searches a product by given Id.
         /// </summary>
         /// <remarks>
         /// Requires no special roles.
@@ -79,7 +81,7 @@ namespace Business.Business.Sales
         }
 
         /// <summary>
-        /// Searches the role by given name
+        /// Searches a product by given name
         /// </summary>
         /// <remarks>
         /// Requires no special roles.
@@ -102,7 +104,7 @@ namespace Business.Business.Sales
         }
 
         /// <summary>
-        /// Searches the role by a given substring
+        /// Searches a product by a given substring
         /// </summary>
         /// <remarks>
         /// Requires no special roles.
@@ -128,9 +130,10 @@ namespace Business.Business.Sales
         /// Adds an product in the database
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts an item name and price.
-        /// 
-        /// Requires no special roles
         /// </remarks>
 
         public void AddItem(string name, double price)
@@ -165,9 +168,10 @@ namespace Business.Business.Sales
         /// Updates the name of the given product
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts the id for getting the product.
-        /// 
-        /// Requires Admin role
         /// </remarks>
 
         public void UpdateName(int id, string newName)
@@ -202,9 +206,10 @@ namespace Business.Business.Sales
         /// Updates the name of the given product
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts the current name for getting the product.
-        /// 
-        /// Requires Admin role
         /// </remarks>
 
         public void UpdateName(string oldName, string newName)
@@ -239,9 +244,10 @@ namespace Business.Business.Sales
         /// Updates the price of the given product
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts the id for getting the product.
-        /// 
-        /// Requires Admin role
         /// </remarks>
 
         public void UpdatePrice(int id, double price)
@@ -273,12 +279,13 @@ namespace Business.Business.Sales
         }
 
         /// <summary>
-        /// Updates the price of the given product
+        /// Updates the price of the given product.
         /// </summary>
         /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
+        /// <remarks>
         /// Accepts the name for getting the product.
-        /// 
-        /// Requires Admin role
         /// </remarks>
 
         public void UpdatePrice(string name, double price)
@@ -309,6 +316,15 @@ namespace Business.Business.Sales
             }
         }
 
+        /// <summary>
+        /// Adds to the amount of a given product.
+        /// </summary>
+        /// <remarks>
+        /// Requires no special roles.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts the product id for getting the product and amount to add
+        /// </remarks>
 
         public void AddAmount(int productId ,double Amount)
         {
@@ -330,6 +346,17 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Subtracts to the amount of a given product.
+        /// </summary>
+        /// <remarks>
+        /// Requires no special roles.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts the product id for getting the product and amount to substract
+        /// </remarks>
+
         public void RemoveAmount(int productId, double Amount)
         {
             if (currentUser.RoleId > 1)
@@ -352,12 +379,13 @@ namespace Business.Business.Sales
         }
 
         /// <summary>
-        /// Deletes the given product
+        /// Deletes the given product.
         /// </summary>
         /// <remarks>
-        /// Accepts an product for getting the product
-        /// 
-        /// Requires Admin role
+        /// Requires Admin Role
+        /// </remarks>
+        /// <remarks>
+        /// Accepts an product for getting the product.
         /// </remarks>
 
 
@@ -386,9 +414,10 @@ namespace Business.Business.Sales
         /// Deletes the given product
         /// </summary>
         /// <remarks>
-        /// Accepts an name for getting the product
-        /// 
         /// Requires Admin role
+        /// </remarks>
+        /// <remarks>
+        /// Accepts an name for getting the product
         /// </remarks>
 
         public void Delete(string name)
