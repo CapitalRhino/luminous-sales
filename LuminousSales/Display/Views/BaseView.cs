@@ -22,6 +22,7 @@ namespace Display.Views
             Console.WriteLine();
             Console.WriteLine("=== MAIN MENU ===");
             Console.WriteLine("0. Exit");
+            Console.WriteLine();
             Console.WriteLine("1. Sales");
         }
         public virtual void ActionHandle()
@@ -30,6 +31,7 @@ namespace Display.Views
             {
                 while (true)
                 {
+                    Console.Clear();
                     ShowAvaliableCommands();
                     Console.Write("> ");
                     int input = int.Parse(Console.ReadLine());
@@ -114,7 +116,7 @@ namespace Display.Views
                 bool endTyped = false;
                 while (!endTyped)
                 {
-                    Console.Write("Type in item id or name: ");
+                    Console.Write("Enter item id or name (\"end\" to finish): ");
                     string itemInput = Console.ReadLine();
                     if (itemInput.ToLower() != "end")
                     {

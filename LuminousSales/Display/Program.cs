@@ -10,17 +10,38 @@ namespace Display
 {
    public class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            User currentUser = new User();
+            var uc = new UserController();
             try
             {
                 BigLogo();
-                Console.WriteLine("Luminous Sales v0.1 by A. Konarcheva, D. Byalkov & D. Todorov 2021");
-                Console.WriteLine();
-                var uc = new UserController();
-                InitialSetup.InitialRegistration(uc);
-                Console.Write("Enter password: ");
-                User currentUser = uc.ValidatePassword(Console.ReadLine());
+                InitialSetup.InitialRegistration(uc); 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            bool isRunning = true;
+            while (isRunning)
+            {
+                try
+                {
+                    Console.Write("Enter password: ");
+                    currentUser = uc.ValidatePassword(Console.ReadLine());
+                    if (currentUser != null)
+                    {
+                        isRunning = false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            try
+            {
                 uc = new UserController(currentUser);
                 var view = new BaseView(currentUser);
                 switch (currentUser.RoleId)
@@ -44,6 +65,9 @@ namespace Display
                 Console.WriteLine(e.Message);
             }
         }
+        /// <summary>
+        /// Logo splash screen
+        /// </summary>
         private static void BigLogo()
         {
             Console.WriteLine("  _                     _                          _____       _          ");
@@ -52,6 +76,8 @@ namespace Display
             Console.WriteLine(" | |   | | | | '_ ` _ \\| | '_ \\ / _ \\| | | / __|  \\___ \\ / _` | |/ _ / __|");
             Console.WriteLine(" | |___| |_| | | | | | | | | | | (_) | |_| \\__ \\  ____) | (_| | |  __\\__ \\");
             Console.WriteLine(" |______\\__,_|_| |_| |_|_|_| |_|\\___/ \\__,_|___/ |_____/ \\__,_|_|\\___|___/");
+            Console.WriteLine("Luminous Sales v0.1.1 by A. Konarcheva, D. Byalkov & D. Todorov 2021");
+            Console.WriteLine();
         }
     }
 }

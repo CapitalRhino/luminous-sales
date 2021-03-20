@@ -13,7 +13,6 @@ namespace Display.Views
         public ManagerView(User currentUser):base(currentUser)
         {
             stockctrl = new StockController(currentUser);
-            dealctrl = new DealController(currentUser);
         }
         public override void ShowAvaliableCommands()
         {
@@ -26,6 +25,7 @@ namespace Display.Views
             {
                 while (true)
                 {
+                    Console.Clear();
                     ShowAvaliableCommands();
                     Console.Write("> ");
                     int input = int.Parse(Console.ReadLine());
@@ -59,11 +59,11 @@ namespace Display.Views
                 Console.WriteLine("0. Back");
                 Console.WriteLine();
                 Console.WriteLine("Stock Managment");
-                Console.WriteLine("1. GetAll");
-                Console.WriteLine("2. Get");
-                Console.WriteLine("3. GetByTime");
-                Console.WriteLine("4. Add");
-                Console.WriteLine("5. Delete");
+                Console.WriteLine("1. List all stocks");
+                Console.WriteLine("2. Get a stock");
+                Console.WriteLine("3. List stocks by time");
+                Console.WriteLine("4. Add stock");
+                Console.WriteLine("5. Delete stock");
                 Console.Write("> ");
                 try
                 {
@@ -174,10 +174,12 @@ namespace Display.Views
                 if (result)
                 {
                     stockctrl.Add(productId, amount, DateTime.Now);
+                    Console.WriteLine("Added stock successfully");
                 }
                 else
                 {
                     stockctrl.Add(product, amount, DateTime.Now);
+                    Console.WriteLine("Added stock successfully");
                 }
             }
             catch (Exception e)
@@ -195,6 +197,7 @@ namespace Display.Views
                 Console.Write("Enter stock id: ");
                 int id = int.Parse(Console.ReadLine());
                 stockctrl.Delete(id);
+                Console.WriteLine($"Deleted stock {id} successfully");
             }
             catch (Exception e)
             {

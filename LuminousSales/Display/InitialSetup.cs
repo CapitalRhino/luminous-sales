@@ -12,6 +12,9 @@ namespace Display
         {
 
         }
+        /// <summary>
+        /// Asks the user for credentials used for the first user - administrator.
+        /// </summary>
         public static void InitialUserInput(out string userName, out string password)
         {
             try
@@ -28,6 +31,10 @@ namespace Display
                 Console.WriteLine(e.Message);
             }
         }
+        /// <summary>
+        /// Registers the initial user as an admin.
+        /// </summary>
+        /// <param name="uc">Current UserController</param>
         public static void InitialRegistration(UserController uc)
         {
             try
