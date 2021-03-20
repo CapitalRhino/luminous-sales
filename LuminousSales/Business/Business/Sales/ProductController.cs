@@ -328,22 +328,15 @@ namespace Business.Business.Sales
 
         public void AddAmount(int productId ,double Amount)
         {
-            if (currentUser.RoleId > 1)
+            var product = Get(productId);
+            if (product != null)
             {
-                var product = Get(productId);
-                if (product != null)
-                {
-                    product.AmountInStock += Amount;
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new ArgumentException("Product id not valid!");
-                }
+                product.AmountInStock += Amount;
+                context.SaveChanges();
             }
             else
             {
-                throw new ArgumentException("Insufficient Role!");
+                throw new ArgumentException("Product id not valid!");
             }
         }
 
@@ -359,25 +352,17 @@ namespace Business.Business.Sales
 
         public void AddAmount(string productName, double Amount)
         {
-            if (currentUser.RoleId > 1)
+            var product = Get(productName);
+            if (product != null)
             {
-                var product = Get(productName);
-                if (product != null)
-                {
-                    product.AmountInStock += Amount;
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new ArgumentException("Product name not valid!");
-                }
+                product.AmountInStock += Amount;
+                context.SaveChanges();
             }
             else
             {
-                throw new ArgumentException("Insufficient Role!");
+                throw new ArgumentException("Product name not valid!");
             }
         }
-
         /// <summary>
         /// Subtracts to the amount of a given product.
         /// </summary>
@@ -414,22 +399,15 @@ namespace Business.Business.Sales
 
         public void RemoveAmount(string productName, double Amount)
         {
-            if (currentUser.RoleId > 1)
+            var product = Get(productName);
+            if (product != null)
             {
-                var product = Get(productName);
-                if (product != null)
-                {
-                    product.AmountInStock -= Amount;
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new ArgumentException("Product id not valid!");
-                }
+                product.AmountInStock -= Amount;
+                context.SaveChanges();
             }
             else
             {
-                throw new ArgumentException("Insufficient Role!");
+                throw new ArgumentException("Product id not valid!");
             }
         }
 
