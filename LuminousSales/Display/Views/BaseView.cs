@@ -11,9 +11,10 @@ namespace Display.Views
     {
         internal ProductController productctrl;
         private DealController dealctrl;
-        private User currentUser;
+        internal User currentUser;
         public BaseView(User currentUser)
         {
+            this.currentUser = currentUser;
             this.dealctrl = new DealController(currentUser);
         }
         public virtual void ShowAvaliableCommands()
@@ -107,22 +108,46 @@ namespace Display.Views
         {
             try
             {
-                Console.Write("Type in item id or name: ");
-                string itemInput = Console.ReadLine();
-                int itemId;
-                if (int.TryParse(itemInput, out itemId))
+                List<Product> check = new List<Product>();
+                bool endTyped = false;
+                while (!endTyped)
                 {
-                    var productToAdd = productctrl.Get(itemId);
-                    Console.Write("Amount: ");
-                    double amount = double.Parse(Console.ReadLine());
-                    dealctrl.Add(itemId, amount, DateTime.Now);
-                }
-                else
-                {
-                    var productToAdd = productctrl.Get(itemInput);
-                    Console.Write("Amount: ");
-                    double amount = double.Parse(Console.ReadLine());
-                    dealctrl.Add(itemInput, amount, DateTime.Now);
+                    Console.Write("Type in item id or name: ");
+                    string itemInput = Console.ReadLine();
+                    if (itemInput.ToLower() != "end")
+                    {
+                        int itemId;
+                        if (int.TryParse(itemInput, out itemId))
+                        {
+                            var productToAdd = productctrl.Get(itemId);
+                            Console.Write("Amount: ");
+                            double amount = double.Parse(Console.ReadLine());
+                            dealctrl.Add(itemId, amount, DateTime.Now);
+                            check.Add(productToAdd);
+                        }
+                        else
+                        {
+                            var productToAdd = productctrl.Get(itemInput);
+                            Console.Write("Amount: ");
+                            double amount = double.Parse(Console.ReadLine());
+                            dealctrl.Add(itemInput, amount, DateTime.Now);
+                            check.Add(productToAdd);
+                        }
+                    }
+                    else
+                    {
+                        endTyped = true;
+                        Console.WriteLine("Check");
+                        double sum = 0;
+                        var lastdeals = dealctrl.GetAll().OrderByDescending(x => x.Id).ToArray();
+                        for (int i = 0; i < check.Count; i++)
+                        {
+                            sum += check[i].Price * lastdeals[i].Amount;
+                            int rowNum = i + 1;
+                            Console.WriteLine($"{rowNum} {check[i].Name} {check[i].Price}x{lastdeals[i].Amount}");
+                        }
+                        Console.WriteLine($"Total: {sum}");
+                    }
                 }
             }
             catch (Exception e)

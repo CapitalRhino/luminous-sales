@@ -12,7 +12,7 @@ namespace Display.Views
         UserController userctl = new UserController();
         public AdminView(User currentUser) : base(currentUser)
         {
-
+            this.currentUser = currentUser;
         }
         public override void ShowAvaliableCommands()
         {
@@ -300,6 +300,7 @@ namespace Display.Views
         }
         public void AddItem()
         {
+            ProductController productctrl = new ProductController(currentUser);
             try
             {
                 Console.WriteLine("Adding item to database...");

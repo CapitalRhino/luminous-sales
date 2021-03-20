@@ -14,6 +14,9 @@ namespace Display
         {
             try
             {
+                BigLogo();
+                Console.WriteLine("Luminous Sales v0.1 by A. Konarcheva, D. Byalkov & D. Todorov 2021");
+                Console.WriteLine();
                 var uc = new UserController();
                 InitialSetup.InitialRegistration(uc);
                 Console.Write("Enter password: ");
@@ -34,13 +37,21 @@ namespace Display
                     default:
                         break;
                 }
-                Console.WriteLine("Luminous Sales v0.1");
                 view.ActionHandle();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+        }
+        private static void BigLogo()
+        {
+            Console.WriteLine("  _                     _                          _____       _          ");
+            Console.WriteLine(" | |                   (_)                        / ____|     | |         ");
+            Console.WriteLine(" | |    _   _ _ __ ___  _ _ __   ___  _   _ ___  | (___   __ _| | ___ ___ ");
+            Console.WriteLine(" | |   | | | | '_ ` _ \\| | '_ \\ / _ \\| | | / __|  \\___ \\ / _` | |/ _ / __|");
+            Console.WriteLine(" | |___| |_| | | | | | | | | | | (_) | |_| \\__ \\  ____) | (_| | |  __\\__ \\");
+            Console.WriteLine(" |______\\__,_|_| |_| |_|_|_| |_|\\___/ \\__,_|___/ |_____/ \\__,_|_|\\___|___/");
         }
     }
 }
