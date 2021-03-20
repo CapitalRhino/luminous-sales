@@ -10,22 +10,59 @@ namespace Display.Views
     {
         StockController stockctrl;
         DealController dealctrl;
+
+        /// <summary>
+        /// Constructor that accepts a user object.
+        /// <summary>
+        /// <remarks>
+        /// User object is used for stock and deal checking.
+        /// </remarks>
+        /// <remarks>
+        /// Initialises stock and deal controllers.
+        /// </remarks>
+
         public ManagerView(User currentUser):base(currentUser)
         {
             stockctrl = new StockController(currentUser);
+            dealctrl = new DealController(currentUser);
         }
+
+       /// <summary>
+       /// Shows all available commands.
+       /// </summary>
+       /// <remarks>
+       /// Inherits all available commands from the base view.
+       /// </remarks>
+       /// <remarks>
+       /// The main menu.
+       /// </remarks>
+
+
         public override void ShowAvaliableCommands()
         {
             base.ShowAvaliableCommands();
             Console.WriteLine("2. Stock");
         }
+
+        /// <summary>
+        /// Asks the user to choose which group of action to use.
+        /// </summary>
+        /// <remarks>
+        /// If user inputs the digit 1, returns selling handles.
+        /// </remarks>
+        /// <remarks>
+        /// If user inputs the digit 2, returns managing handles.
+        /// </remarks>
+        /// <remarks>
+        /// If user inputs something else, the operation is invalid.
+        /// </remarks>
+
         public override void ActionHandle()
         {
             try
             {
                 while (true)
                 {
-                    Console.Clear();
                     ShowAvaliableCommands();
                     Console.Write("> ");
                     int input = int.Parse(Console.ReadLine());
@@ -49,6 +86,14 @@ namespace Display.Views
                 Console.WriteLine(e.Message);
             }
         }
+
+        /// <summary>
+        /// Selection menu with manager actions.
+        /// </summary>
+        /// <remarks>
+        /// Requires role level 2 (Manager).
+        /// </remarks>
+
         public void ManageHandle()
         {
             bool running = true;
@@ -59,11 +104,11 @@ namespace Display.Views
                 Console.WriteLine("0. Back");
                 Console.WriteLine();
                 Console.WriteLine("Stock Managment");
-                Console.WriteLine("1. List all stocks");
-                Console.WriteLine("2. Get a stock");
-                Console.WriteLine("3. List stocks by time");
-                Console.WriteLine("4. Add stock");
-                Console.WriteLine("5. Delete stock");
+                Console.WriteLine("1. GetAll");
+                Console.WriteLine("2. Get");
+                Console.WriteLine("3. GetByTime");
+                Console.WriteLine("4. Add");
+                Console.WriteLine("5. Delete");
                 Console.Write("> ");
                 try
                 {
@@ -100,6 +145,11 @@ namespace Display.Views
             }
 
         }
+
+        /// <summary>
+        /// Lists all information about stock from the database.
+        /// </summary>
+       
         public void GetAll()
         {
             try
@@ -119,6 +169,10 @@ namespace Display.Views
           
         }
 
+        /// <summary>
+        /// Lists all registered information about stocks from the database.
+        /// </summary>
+       
         public void Get()
         {
 
@@ -138,7 +192,15 @@ namespace Display.Views
             }
 
         }
-
+        /// <summary>
+        /// Gets stock by its start time and end time.
+        /// </summary>
+        /// <remarks>
+        /// Inputs start time and end time.
+        /// </remarks>
+        /// <remarks>
+        /// Lists all information about stocks from the database in real time.
+        /// </remarks>
         public void GetByTime()
         {
             try
@@ -161,6 +223,19 @@ namespace Display.Views
             }
         }
 
+        /// <summary>
+        /// Adding a stock using the product id or name.
+        /// </summary>
+        /// <remarks>
+        /// Entering product name and amount.
+        /// </remarks>
+        /// <remarks>
+        /// If the result is true, returns a stock with product id, amount and a real time.
+        /// </remarks>
+        /// <remarks>
+        /// Else returns a stock with product name, amount and a real time.
+        /// </remarks>
+        
         public void Add()
         {
             try
@@ -174,12 +249,10 @@ namespace Display.Views
                 if (result)
                 {
                     stockctrl.Add(productId, amount, DateTime.Now);
-                    Console.WriteLine("Added stock successfully");
                 }
                 else
                 {
                     stockctrl.Add(product, amount, DateTime.Now);
-                    Console.WriteLine("Added stock successfully");
                 }
             }
             catch (Exception e)
@@ -189,6 +262,10 @@ namespace Display.Views
             }
         }
 
+        /// <summary>
+        /// Deletes a stock from the database.
+        /// </summary>
+        
         public void Delete()
         {
             try
@@ -197,7 +274,6 @@ namespace Display.Views
                 Console.Write("Enter stock id: ");
                 int id = int.Parse(Console.ReadLine());
                 stockctrl.Delete(id);
-                Console.WriteLine($"Deleted stock {id} successfully");
             }
             catch (Exception e)
             {
