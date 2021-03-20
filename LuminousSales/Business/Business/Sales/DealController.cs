@@ -14,6 +14,7 @@ namespace Business.Business.Sales
         private ProductController productCtrl;
         public DealController(User currentUser)
         {
+            this.productCtrl = new ProductController(currentUser);
             this.currentUser = currentUser;
         }
         public void Add(int productId, double Amount, DateTime time)
@@ -21,6 +22,7 @@ namespace Business.Business.Sales
             if (Amount > 0)
             {
                 var deal = new Deal(currentUser.Id, productId, Amount, time);
+                productCtrl.RemoveAmount(productId, Amount);
                 context.Deal.Add(deal);
                 context.SaveChanges();
             }
@@ -37,6 +39,7 @@ namespace Business.Business.Sales
                 productCtrl = new ProductController(currentUser);
                 var productId = productCtrl.Get(productName).Id;
                 var deal = new Deal(currentUser.Id, productId, Amount, time);
+                productCtrl.RemoveAmount(productId, Amount);
                 context.Deal.Add(deal);
                 context.SaveChanges();
             }
@@ -53,6 +56,7 @@ namespace Business.Business.Sales
                 var deal = Get(id);
                 if (deal != null)
                 {
+                    productCtrl.AddAmount(deal.ProductId, deal.Amount);
                     context.Deal.Remove(deal);
                     context.SaveChanges();
                 }

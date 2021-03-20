@@ -25,6 +25,11 @@ namespace Business.Business.UserManagment.Controllers
             this.context = new LuminousContext();
         }
 
+        public RoleController(LuminousContext context)
+        {
+            this.context = context;
+        }
+
         /// <summary>
         /// Constructor that accepts a user object
         /// </summary>
@@ -46,7 +51,7 @@ namespace Business.Business.UserManagment.Controllers
         /// User object is used for role checking
         /// </remarks>
         
-        public RoleController(LuminousContext context, User currentUser)
+        public RoleController(User currentUser, LuminousContext context)
         {
             this.context = context;
             this.currentUser = currentUser;

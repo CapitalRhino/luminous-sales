@@ -308,6 +308,46 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+        public void AddAmount(int productId ,double Amount)
+        {
+            if (currentUser.RoleId > 1)
+            {
+                var product = Get(productId);
+                if (product != null)
+                {
+                    product.AmountInStock += Amount;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("Product id not valid!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
+        }
+        public void RemoveAmount(int productId, double Amount)
+        {
+            if (currentUser.RoleId > 1)
+            {
+                var product = Get(productId);
+                if (product != null)
+                {
+                    product.AmountInStock -= Amount;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("Product id not valid!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
+        }
 
         /// <summary>
         /// Deletes the given product
@@ -317,6 +357,7 @@ namespace Business.Business.Sales
         /// 
         /// Requires Admin role
         /// </remarks>
+
 
         public void Delete(int id)
         {

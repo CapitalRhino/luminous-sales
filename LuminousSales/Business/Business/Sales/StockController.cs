@@ -16,6 +16,7 @@ namespace Business.Business.Sales
 
         public StockController(User currentUser)
         {
+            this.productCtrl = new ProductController(currentUser);
             this.currentUser = currentUser;
         }
 
@@ -63,8 +64,7 @@ namespace Business.Business.Sales
                 if (Amount > 0)
                 {
                     var stock = new Stock(currentUser.Id, productId, Amount, time);
-                    productCtrl = new ProductController(currentUser);
-                    productCtrl.Get(productId).AmountInStock += Amount;
+                    productCtrl.AddAmount(productId, Amount);
                     context.Stock.Add(stock);
                     context.SaveChanges();
                 }
@@ -89,7 +89,7 @@ namespace Business.Business.Sales
                     productCtrl = new ProductController(currentUser);
                     var productId = productCtrl.Get(productName).Id;
                     var stock = new Stock(currentUser.Id, productId, Amount, time);
-                    productCtrl.Get(productId).AmountInStock += Amount;
+                    productCtrl.AddAmount(productId, Amount);
                     context.Stock.Add(stock);
                     context.SaveChanges();
                 }
@@ -110,15 +110,16 @@ namespace Business.Business.Sales
         {
             if (currentUser.RoleId == 3 )
             {
-                var user = Get(id);
-                if (user != null)
+                var stock = Get(id);
+                if (stock != null)
                 {
-                    context.Stock.Remove(user);
+                    productCtrl.RemoveAmount(stock.ProductId, stock.Amount);
+                    context.Stock.Remove(stock);
                     context.SaveChanges();
                 }
                 else
                 {
-                    throw new ArgumentException("User not found");
+                    throw new ArgumentException("Stock Id not found!");
                 }
 
             }
