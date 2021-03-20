@@ -44,7 +44,7 @@ namespace Business.Business.Sales
         /// Gets All Roles
         /// </summary>
         /// <remarks>
-        /// Requires no special roles
+        /// Requires no special roles.
         /// </remarks>
         /// <returns>
         /// Returns a ICollection of all roles.
@@ -56,12 +56,13 @@ namespace Business.Business.Sales
         }
 
         /// <summary>
-        /// Searches the role by given Id
+        /// Searches the role by given Id.
         /// </summary>
+        /// <remarks>
+        /// Requires no special roles.
+        /// </remarks>
         /// <returns>
         /// Returns an object of the role with the given Id. 
-        /// 
-        /// Requires no special roles
         /// </returns>
 
         public Product Get(int id)
@@ -80,10 +81,11 @@ namespace Business.Business.Sales
         /// <summary>
         /// Searches the role by given name
         /// </summary>
+        /// <remarks>
+        /// Requires no special roles.
+        /// </remarks>
         /// <returns>
         /// Returns an object of the role with the given name.
-        /// 
-        /// Requires no special roles
         /// </returns>
 
         public Product Get(string name)
@@ -102,10 +104,11 @@ namespace Business.Business.Sales
         /// <summary>
         /// Searches the role by a given substring
         /// </summary>
+        /// <remarks>
+        /// Requires no special roles.
+        /// </remarks>
         /// <returns>
         /// Returns an ICollection of all roles that contain the given substring in their name.
-        /// 
-        /// Requires no special roles
         /// </returns>
 
         public ICollection<Product> GetByApproximateName(string name)

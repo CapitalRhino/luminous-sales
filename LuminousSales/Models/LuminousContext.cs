@@ -16,11 +16,11 @@ namespace Models
 
         }
 
-        public DbSet<User> User { get; set; }
-        public DbSet<Role> Role { get; set; }
-        public DbSet<Product> Product { get; set; }
-        public DbSet<Deal> Deal { get; set; }
-        public DbSet<Stock> Stock { get; set; }
+        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<Deal> Deal { get; set; }
+        public virtual DbSet<Stock> Stock { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -161,10 +161,13 @@ namespace Business.Business.UserManagment
         /// Checks if the password is valid
         /// </summary>
         /// <remarks>
-        /// Password is used to log in the user
+        /// Requires no special roles.
+        /// </remarks>
+        /// <remarks>
+        /// Password is used to log in the user.
         /// </remarks>
         /// <returns>
-        /// Returns an object of the found user
+        /// Returns an object of the found user.
         /// </returns>
 
         public User ValidatePassword(string password)
@@ -181,7 +184,10 @@ namespace Business.Business.UserManagment
         /// Registers an user
         /// </summary>
         /// <remarks>
-        /// Used for the creation of the initial user, so it assigns admin role by default
+        /// Requires no special roles.
+        /// </remarks>
+        /// <remarks>
+        /// Used for the creation of the initial user, so it assigns admin role by default.
         /// </remarks>
 
         public void RegisterItem(string name, string password)

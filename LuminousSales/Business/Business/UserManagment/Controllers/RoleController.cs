@@ -51,14 +51,17 @@ namespace Business.Business.UserManagment.Controllers
             this.context = context;
             this.currentUser = currentUser;
         }
-        
+
         /// <summary>
         /// Creates the roles
         /// </summary>
         /// <remarks>
+        /// Requires no special roles. Not even an registered user.
+        /// </remarks>
+        /// <remarks>
         /// Almost every method of each class checks if the user has suffficient roles for the task
         /// </remarks>
-        
+
         public void CreateInitialRoles()
         {
             var Cashier = new Role("Cashier");
