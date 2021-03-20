@@ -44,17 +44,17 @@ namespace LuminousUnitTests
             UserMock.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(testUsers.ElementType);
             UserMock.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(testUsers.GetEnumerator());
 
-            RoleMock.As<IQueryable<User>>().Setup(m => m.Provider).Returns(testUsers.Provider);
-            RoleMock.As<IQueryable<User>>().Setup(m => m.Expression).Returns(testUsers.Expression);
-            RoleMock.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(testUsers.ElementType);
-            RoleMock.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(testUsers.GetEnumerator());
+            RoleMock.As<IQueryable<Role>>().Setup(m => m.Provider).Returns(testRoles.Provider);
+            RoleMock.As<IQueryable<Role>>().Setup(m => m.Expression).Returns(testRoles.Expression);
+            RoleMock.As<IQueryable<Role>>().Setup(m => m.ElementType).Returns(testRoles.ElementType);
+            RoleMock.As<IQueryable<Role>>().Setup(m => m.GetEnumerator()).Returns(testRoles.GetEnumerator());
 
             testContext = new Mock<LuminousContext>();
             testContext.Setup(s => s.User).Returns(UserMock.Object);
             testContext.Setup(s => s.Role).Returns(RoleMock.Object);
 
-            userctrl = new UserController(testUsers.ToList()[0], testContext.Object);
             rolectrl = new RoleController(testContext.Object);
+            userctrl = new UserController(testUsers.ToList()[2], testContext.Object, rolectrl);
         }
 
         [Test]

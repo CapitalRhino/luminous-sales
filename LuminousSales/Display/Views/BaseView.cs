@@ -10,10 +10,10 @@ namespace Display.Views
     public class BaseView
     {
         internal ProductController productctrl;
-        DealController dealctrl;
+        private DealController dealctrl;
+        private User currentUser;
         public BaseView(User currentUser)
         {
-            this.productctrl = new ProductController(currentUser);
             this.dealctrl = new DealController(currentUser);
         }
         public virtual void ShowAvaliableCommands()
@@ -89,10 +89,10 @@ namespace Display.Views
         {
             try
             {
+                productctrl = new ProductController(currentUser);
                 Console.Write("Search item: ");
                 string search = Console.ReadLine();
-                ICollection<Product> productsFound = productctrl.GetByApproximateName(search).ToArray();
-                foreach (var item in productsFound)
+                foreach (var item in productctrl.GetByApproximateName(search).ToList())
                 {
                     Console.WriteLine($"{item.Id} {item.Name} {item.Price} {item.AmountInStock}");
                 }

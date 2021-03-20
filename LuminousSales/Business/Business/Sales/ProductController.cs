@@ -308,6 +308,8 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+
         public void AddAmount(int productId ,double Amount)
         {
             if (currentUser.RoleId > 1)

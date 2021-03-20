@@ -51,6 +51,14 @@ namespace Business.Business.UserManagment
         {
             this.currentUser = currentUser;
             this.context = context;
+            this.rolectrl = new RoleController(currentUser);
+        }
+
+        public UserController(User currentUser, LuminousContext context, RoleController rolectrl)
+        {
+            this.currentUser = currentUser;
+            this.context = context;
+            this.rolectrl = rolectrl;
         }
 
         /// <summary>
