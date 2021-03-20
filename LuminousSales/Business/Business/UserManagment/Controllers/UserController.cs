@@ -180,7 +180,7 @@ namespace Business.Business.UserManagment
 
         public User ValidatePassword(string password)
         {
-            var user = context.User.FirstOrDefault();
+            var user = context.User.FirstOrDefault(x => x.Password == password);
             if (user == null)
             {
                 throw new ArgumentException("Invalid User!");

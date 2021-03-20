@@ -55,10 +55,12 @@ namespace Display.Views
             while (running)
             {
                 Console.WriteLine();
+                Console.WriteLine("=== SALES ===");
+                Console.WriteLine("0. Back");
+                Console.WriteLine();
                 Console.WriteLine("Deal Managment");
                 Console.WriteLine("1. Search");
                 Console.WriteLine("2. Sale");
-                Console.WriteLine("3. Back");
                 Console.Write("> ");
                 try
                 {
@@ -71,7 +73,7 @@ namespace Display.Views
                         case 2:
                             SaleItem();
                             break;
-                        case 3:
+                        case 0:
                             running = false;
                             break;
                         default:

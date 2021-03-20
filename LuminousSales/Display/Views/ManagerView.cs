@@ -55,13 +55,15 @@ namespace Display.Views
             while (running)
             {
                 Console.WriteLine();
+                Console.WriteLine("=== STOCK ===");
+                Console.WriteLine("0. Back");
+                Console.WriteLine();
                 Console.WriteLine("Stock Managment");
                 Console.WriteLine("1. GetAll");
                 Console.WriteLine("2. Get");
                 Console.WriteLine("3. GetByTime");
                 Console.WriteLine("4. Add");
                 Console.WriteLine("5. Delete");
-                Console.WriteLine("6. Back");
                 Console.Write("> ");
                 try
                 {
@@ -83,7 +85,7 @@ namespace Display.Views
                         case 5:
                             Delete();
                             break;
-                        case 6:
+                        case 0:
                             running = false;
                             break;
                         default:

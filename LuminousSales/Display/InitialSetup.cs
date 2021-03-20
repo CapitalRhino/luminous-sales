@@ -43,6 +43,7 @@ namespace Display
                     string userName, password;
                     InitialUserInput(out userName, out password);
                     uc.RegisterItem(userName, password);
+                    Console.WriteLine("Registration succesful!");
                 }
             }
             catch (Exception e)

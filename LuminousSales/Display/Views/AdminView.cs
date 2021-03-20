@@ -58,6 +58,9 @@ namespace Display.Views
             while (running)
             {
                 Console.WriteLine();
+                Console.WriteLine("=== ADMINISTRATION ===");
+                Console.WriteLine("0. Back");
+                Console.WriteLine();
                 Console.WriteLine("User Managment");
                 Console.WriteLine("1. GetAll");
                 Console.WriteLine("2. Get");
@@ -70,8 +73,7 @@ namespace Display.Views
                 Console.WriteLine();
                 Console.WriteLine("Product Managment");
                 Console.WriteLine("9. AddItem");
-                Console.WriteLine();
-                Console.WriteLine("10. Back");
+                Console.WriteLine("10. GetAllItems");
                 Console.Write("> ");
                 try
                 {
@@ -106,6 +108,9 @@ namespace Display.Views
                             AddItem();
                             break;
                         case 10:
+                            GetAllItems();
+                            break;
+                        case 0:
                             running = false;
                             break;
                         default:
@@ -120,14 +125,33 @@ namespace Display.Views
             }
 
         }
+
+        private void GetAllItems()
+        {
+            try
+            {
+                Console.WriteLine("Getting all items...");
+                Console.WriteLine("ID - Name - Amount - Price");
+                foreach (var item in productctrl.GetAll())
+                {
+                    Console.WriteLine($"{item.Id} - {item.Name} - {item.AmountInStock} - {item.Price} ");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
         public void GetAllUsers()
         {
             try
             {
                 Console.WriteLine("Getting all users...");
+                Console.WriteLine("User ID - Username - Role");
                 foreach (var item in userctl.GetAll())
                 {
-                    Console.WriteLine($"{item.Id} {item.Name} {item.Role} ");
+                    Console.WriteLine($"{item.Id} - {item.Name} - {item.Role} ");
                 }
             }
             catch (Exception e)
