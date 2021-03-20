@@ -169,6 +169,16 @@ namespace Business.Business.Sales
             }
         }
 
+        /// <summary>
+        /// Adds Deal to the database.
+        /// </summary>
+        /// <remarks>
+        /// Requires no special roles.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts product id for getting the product, amount sold and time of transaction.
+        /// </remarks>
+
         public void Add(int productId, double Amount, DateTime time)
         {
             if (Amount > 0)
@@ -183,6 +193,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Amount cannot be negative");
             }
         }
+
+        /// <summary>
+        /// Adds Deal to the database.
+        /// </summary>
+        /// <remarks>
+        /// Requires no special roles.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts product name for getting the product, amount sold and time of transaction.
+        /// </remarks>
 
         public void Add(string productName, double Amount, DateTime time)
         {
@@ -200,6 +220,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Amount cannot be negative");
             }
         }
+
+        /// <summary>
+        /// Deletes Deal from the database.
+        /// </summary>
+        /// <remarks>
+        /// Requires Manager Role or better.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts product id for getting the product
+        /// </remarks>
 
         public void Delete(int id)
         {
