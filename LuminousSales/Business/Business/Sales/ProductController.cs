@@ -12,15 +12,58 @@ namespace Business.Business.Sales
     {
         private LuminousContext context;
         private User currentUser;
+
+        /// <summary>
+        /// Constructor that accepts a user object
+        /// </summary>
+        /// <remarks>
+        /// User object is used for role checking
+        /// </remarks>
+
         public ProductController(User currenUser)
         {
             this.currentUser = currenUser;
-            context = new LuminousContext();
+            this.context = new LuminousContext();
         }
+
+        /// <summary>
+        /// Constructor that accepts custom context and a user object
+        /// </summary>
+        /// <remarks>
+        /// Custom context is mainly used for Unit Testing
+        /// User object is used for role checking
+        /// </remarks>
+
+        public ProductController(LuminousContext context, User currenUser)
+        {
+            this.currentUser = currenUser;
+            this.context = context;
+        }
+
+        /// <summary>
+        /// Gets All Roles
+        /// </summary>
+        /// <remarks>
+        /// Requires no special roles
+        /// </remarks>
+        /// <returns>
+        /// Returns a ICollection of all roles.
+        /// </returns>
+
         public ICollection<Product> GetAll()
         {
             return context.Product.ToList();
         }
+
+        /// <summary>
+        /// Searches the role by given Id
+        /// </summary>
+        /// <returns>
+        /// Returns an object of the role with the given Id. 
+        /// 
+        /// Requires no special roles
+        /// </returns>
+
         public Product Get(int id)
         {
             var item = context.Product.Find(id);
@@ -33,6 +76,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Product Id not found!");
             }
         }
+
+        /// <summary>
+        /// Searches the role by given name
+        /// </summary>
+        /// <returns>
+        /// Returns an object of the role with the given name.
+        /// 
+        /// Requires no special roles
+        /// </returns>
+
         public Product Get(string name)
         {
             var item = context.Product.FirstOrDefault(p => p.Name == name);
@@ -45,6 +98,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Product name not found!");
             }
         }
+
+        /// <summary>
+        /// Searches the role by a given substring
+        /// </summary>
+        /// <returns>
+        /// Returns an ICollection of all roles that contain the given substring in their name.
+        /// 
+        /// Requires no special roles
+        /// </returns>
+
         public ICollection<Product> GetByApproximateName(string name)
         {
             var items = context.Product.Where(u => u.Name.Contains(name)).ToList();
@@ -57,6 +120,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("No products added in the database!");
             }
         }
+
+        /// <summary>
+        /// Adds an product in the database
+        /// </summary>
+        /// <remarks>
+        /// Accepts an item name and price.
+        /// 
+        /// Requires no special roles
+        /// </remarks>
+
         public void AddItem(string name, double price)
         {
             if (currentUser.RoleId == 3)
@@ -84,6 +157,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the name of the given product
+        /// </summary>
+        /// <remarks>
+        /// Accepts the id for getting the product.
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void UpdateName(int id, string newName)
         {
             if (currentUser.RoleId == 3)
@@ -111,6 +194,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the name of the given product
+        /// </summary>
+        /// <remarks>
+        /// Accepts the current name for getting the product.
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void UpdateName(string oldName, string newName)
         {
             if (currentUser.RoleId == 3)
@@ -138,6 +231,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the price of the given product
+        /// </summary>
+        /// <remarks>
+        /// Accepts the id for getting the product.
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void UpdatePrice(int id, double price)
         {
             if (currentUser.RoleId  == 3)
@@ -165,6 +268,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the price of the given product
+        /// </summary>
+        /// <remarks>
+        /// Accepts the name for getting the product.
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void UpdatePrice(string name, double price)
         {
             if (currentUser.RoleId == 3)
@@ -192,6 +305,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Deletes the given product
+        /// </summary>
+        /// <remarks>
+        /// Accepts an product for getting the product
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void Delete(int id)
         {
             if (currentUser.RoleId == 3)
@@ -212,6 +335,16 @@ namespace Business.Business.Sales
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Deletes the given product
+        /// </summary>
+        /// <remarks>
+        /// Accepts an name for getting the product
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void Delete(string name)
         {
             if (currentUser.RoleId == 3)

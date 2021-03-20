@@ -12,16 +12,56 @@ namespace Business.Business.UserManagment
         private LuminousContext context;
         private RoleController rolectrl;
         private User currentUser;
+
+        /// <summary>
+        /// Empty Constructor
+        /// </summary>
+        /// <remarks>
+        /// Used for Initialiation of the roles in the database
+        /// </remarks>
+        
         public UserController()
         {
             this.context = new LuminousContext();
         }
+
+        /// <summary>
+        /// Constructor that accepts a user object
+        /// </summary>
+        /// <remarks>
+        /// User object is used for role checking
+        /// </remarks>
+
         public UserController(User currentUser)
         {
             this.currentUser = currentUser;
             this.context = new LuminousContext();
             this.rolectrl = new RoleController(currentUser);
         }
+
+        /// <summary>
+        /// Constructor that accepts custom context and a user object
+        /// </summary>
+        /// <remarks>
+        /// Custom context is mainly used for Unit Testing
+        /// User object is used for role checking
+        /// </remarks>
+
+        public UserController(User currentUser, LuminousContext context)
+        {
+            this.currentUser = currentUser;
+            this.context = context;
+        }
+
+        /// <summary>
+        /// Gets All Users
+        /// </summary>
+        /// <returns>
+        /// Returns a ICollection of all users.
+        /// 
+        /// Requires Admin role
+        /// </returns>
+
         public ICollection<User> GetAll()
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -33,14 +73,30 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Checks if there's a user in the database
+        /// </summary>
+        /// <remarks>
+        /// Can be used with an empty constructor
+        /// </remarks>
+
         public bool CheckIfUserEverCreated()
         {
             if (context.User.ToList().Any())
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
+
+        /// <summary>
+        /// Searches the user by given Id
+        /// </summary>
+        /// <returns>
+        /// Returns an object of the user with the given Id
+        /// </returns>
+
         public User Get(int id)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -52,6 +108,16 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Searches the user by given name
+        /// </summary>
+        /// <returns>
+        /// Returns an object of the user with the given name.
+        /// 
+        /// Requires Admin role
+        /// </returns>
+
         public User Get(string name)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -63,6 +129,38 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Searches the user by a given substring
+        /// </summary>
+        /// <returns>
+        /// Returns an ICollection of all users that contain the given substring in their name.
+        /// 
+        /// Requires Admin role
+        /// </returns>
+
+        public ICollection<User> GetByApproximateName(string substring)
+        {
+            if (currentUser != null || currentUser.RoleId == 3)
+            {
+                return context.User.Where(u => u.Name.Contains(substring)).ToList();
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
+        }
+
+        /// <summary>
+        /// Checks if the password is valid
+        /// </summary>
+        /// <remarks>
+        /// Password is used to log in the user
+        /// </remarks>
+        /// <returns>
+        /// Returns an object of the found user
+        /// </returns>
+
         public User ValidatePassword(string password)
         {
             var user = context.User.FirstOrDefault();
@@ -72,23 +170,30 @@ namespace Business.Business.UserManagment
             }
             return user;
         }
-        public ICollection<User> GetByApproximateName(string name)
-        {
-            if (currentUser != null || currentUser.RoleId == 3)
-            {
-                return context.User.Where(u => u.Name.Contains(name)).ToList();
-            }
-            else
-            {
-                throw new ArgumentException("Insufficient Role!");
-            }
-        }
+
+        /// <summary>
+        /// Registers an user
+        /// </summary>
+        /// <remarks>
+        /// Used for the creation of the initial user, so it assigns admin role by default
+        /// </remarks>
+
         public void RegisterItem(string name, string password)
         {
             var user = new User(name, password, 1);
             context.User.Add(user);
             context.SaveChanges();
         }
+
+        /// <summary>
+        /// Registers an user
+        /// </summary>
+        /// <remarks>
+        /// Accepts an role id so it can assign a role to the user.
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void RegisterItem(string name, string password, int roleId)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -121,6 +226,16 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Registers an user
+        /// </summary>
+        /// <remarks>
+        /// Accepts an role name so it can assign a role to the user.
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void RegisterItem(string name, string password, string roleName)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -153,6 +268,16 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the username of the given user
+        /// </summary>
+        /// <remarks>
+        /// Accepts an id for getting the user.
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void UpdateName(int id, string newName)
         {
             if (currentUser != null || currentUser.Id == 3)
@@ -180,6 +305,16 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the username of the given user
+        /// </summary>
+        /// <remarks>
+        /// Accepts the current name for getting the user.
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void UpdateName(string oldName, string newName)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -207,6 +342,16 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the password of the given user
+        /// </summary>
+        /// <remarks>
+        /// Accepts an id for getting the user.
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void UpdatePassword(int id, string newPassword)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -234,6 +379,16 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the password of the given user
+        /// </summary>
+        /// <remarks>
+        /// Accepts the name for getting the user.
+        /// 
+        /// Requires Admin role
+        /// </remarks>
+
         public void UpdatePassword(string name, string newPassword)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -261,6 +416,17 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the role of the given user
+        /// </summary>
+        /// <remarks>
+        /// Accepts an user id for getting the user. 
+        /// Accepts an role id for getting the role. 
+        /// 
+        /// Requires Admin role.
+        /// </remarks>
+
         public void UpdateRole(int id, int RoleId)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -289,6 +455,17 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the role of the given user
+        /// </summary>
+        /// <remarks>
+        /// Accepts an user id for getting the user. 
+        /// Accepts an role name for getting the role. 
+        /// 
+        /// Requires Admin role.
+        /// </remarks>
+
         public void UpdateRole(int id, string roleName)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -317,6 +494,17 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the role of the given user
+        /// </summary>
+        /// <remarks>
+        /// Accepts an username for getting the user.
+        /// Accepts an role id for getting the role.
+        /// 
+        /// Requires Admin role.
+        /// </remarks>
+
         public void UpdateRole(string name, int roleId)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -345,6 +533,17 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Updates the role of the given user
+        /// </summary>
+        /// <remarks>
+        /// Accepts an username for getting the user.
+        /// Accepts an role name for getting the role.
+        /// 
+        /// Requires Admin role.
+        /// </remarks>
+
         public void UpdateRole(string name, string roleName)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -373,6 +572,16 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Deletes the given user
+        /// </summary>
+        /// <remarks>
+        /// Accepts an user id for getting the user.
+        /// 
+        /// Requires Admin role.
+        /// </remarks>
+
         public void Delete(int id)
         {
             if (currentUser != null || currentUser.RoleId == 3)
@@ -393,6 +602,16 @@ namespace Business.Business.UserManagment
                 throw new ArgumentException("Insufficient Role!");
             }
         }
+
+        /// <summary>
+        /// Deletes the given user
+        /// </summary>
+        /// <remarks>
+        /// Accepts an username for getting the user.
+        /// 
+        /// Requires Admin role.
+        /// </remarks>
+
         public void Delete(string name)
         {
             if (currentUser != null || currentUser.RoleId == 3)
