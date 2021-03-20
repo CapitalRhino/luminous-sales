@@ -56,10 +56,11 @@ namespace Business.Business.UserManagment
         /// <summary>
         /// Gets All Users
         /// </summary>
+        /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
         /// <returns>
         /// Returns a ICollection of all users.
-        /// 
-        /// Requires Admin role
         /// </returns>
 
         public ICollection<User> GetAll()
@@ -92,6 +93,9 @@ namespace Business.Business.UserManagment
 
         /// <summary>
         /// Searches the user by given Id
+        /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
         /// </summary>
         /// <returns>
         /// Returns an object of the user with the given Id
@@ -112,10 +116,11 @@ namespace Business.Business.UserManagment
         /// <summary>
         /// Searches the user by given name
         /// </summary>
+        /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
         /// <returns>
         /// Returns an object of the user with the given name.
-        /// 
-        /// Requires Admin role
         /// </returns>
 
         public User Get(string name)
@@ -133,10 +138,11 @@ namespace Business.Business.UserManagment
         /// <summary>
         /// Searches the user by a given substring
         /// </summary>
+        /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
         /// <returns>
         /// Returns an ICollection of all users that contain the given substring in their name.
-        /// 
-        /// Requires Admin role
         /// </returns>
 
         public ICollection<User> GetByApproximateName(string substring)

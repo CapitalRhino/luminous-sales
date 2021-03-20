@@ -61,16 +61,19 @@ namespace Business.Business.UserManagment.Controllers
         
         public void CreateInitialRoles()
         {
-            var Admin = new Role("Admin");
-            var Manager = new Role("Manager");
             var Cashier = new Role("Cashier");
-            context.Role.AddRange(Admin, Manager, Cashier);
+            var Manager = new Role("Manager");
+            var Admin = new Role("Admin");
+            context.Role.AddRange(Cashier, Manager, Admin);
             context.SaveChanges();
         }
         
         /// <summary>
-        /// Gets All Roles
+        /// Gets All Roles.
         /// </summary>
+        /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
         /// <returns>
         /// Returns a ICollection of all roles
         /// </returns>
@@ -90,10 +93,11 @@ namespace Business.Business.UserManagment.Controllers
         /// <summary>
         /// Searches the role by given Id
         /// </summary>
-        /// <returns>
-        /// Returns an object of the role with the given Id
-        /// 
+        /// <remarks>
         /// Requires Admin role.
+        /// </remarks>
+        /// <returns>
+        /// Returns an object of the role with the given Id.
         /// </returns>
 
         public Role Get(int id)
@@ -111,10 +115,11 @@ namespace Business.Business.UserManagment.Controllers
         /// <summary>
         /// Searches the role by given name
         /// </summary>
-        /// <returns>
-        /// Returns an object of the role with the given name
-        /// 
+        /// <remarks>
         /// Requires Admin role.
+        /// </remarks>
+        /// <returns>
+        /// Returns an object of the role with the given name.
         /// </returns>
 
         public Role Get(string name)
@@ -132,10 +137,11 @@ namespace Business.Business.UserManagment.Controllers
         /// <summary>
         /// Searches the role by a given substring
         /// </summary>
+        /// <remarks>
+        /// Requires Admin role.
+        /// </remarks>
         /// <returns>
         /// Returns an ICollection of all roles that contain the given substring in their name.
-        /// 
-        /// Requires Admin role.
         /// </returns>
 
         public ICollection<Role> GetByApproximateName(string substring)
