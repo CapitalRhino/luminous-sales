@@ -76,7 +76,7 @@ namespace Display
             Console.WriteLine(" | |   | | | | '_ ` _ \\| | '_ \\ / _ \\| | | / __|  \\___ \\ / _` | |/ _ / __|");
             Console.WriteLine(" | |___| |_| | | | | | | | | | | (_) | |_| \\__ \\  ____) | (_| | |  __\\__ \\");
             Console.WriteLine(" |______\\__,_|_| |_| |_|_|_| |_|\\___/ \\__,_|___/ |_____/ \\__,_|_|\\___|___/");
-            Console.WriteLine("Luminous Sales v0.1.1 by A. Konarcheva, D. Byalkov & D. Todorov 2021");
+            Console.WriteLine("Luminous Sales v1.0.0 by A. Konarcheva, D. Byalkov & D. Todorov 2021");
             Console.WriteLine();
         }
     }
