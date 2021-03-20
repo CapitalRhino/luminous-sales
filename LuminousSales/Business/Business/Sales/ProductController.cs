@@ -348,6 +348,37 @@ namespace Business.Business.Sales
         }
 
         /// <summary>
+        /// Adds to the amount of a given product.
+        /// </summary>
+        /// <remarks>
+        /// Requires no special roles.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts the product name for getting the product and amount to add
+        /// </remarks>
+
+        public void AddAmount(string productName, double Amount)
+        {
+            if (currentUser.RoleId > 1)
+            {
+                var product = Get(productName);
+                if (product != null)
+                {
+                    product.AmountInStock += Amount;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("Product name not valid!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
+        }
+
+        /// <summary>
         /// Subtracts to the amount of a given product.
         /// </summary>
         /// <remarks>
@@ -362,6 +393,37 @@ namespace Business.Business.Sales
             if (currentUser.RoleId > 1)
             {
                 var product = Get(productId);
+                if (product != null)
+                {
+                    product.AmountInStock -= Amount;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new ArgumentException("Product id not valid!");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Insufficient Role!");
+            }
+        }
+
+        /// <summary>
+        /// Subtracts to the amount of a given product.
+        /// </summary>
+        /// <remarks>
+        /// Requires no special roles.
+        /// </remarks>
+        /// <remarks>
+        /// Accepts the product name for getting the product and amount to substract
+        /// </remarks>
+
+        public void RemoveAmount(string productName, double Amount)
+        {
+            if (currentUser.RoleId > 1)
+            {
+                var product = Get(productName);
                 if (product != null)
                 {
                     product.AmountInStock -= Amount;
