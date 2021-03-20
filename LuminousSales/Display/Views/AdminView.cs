@@ -98,6 +98,10 @@ namespace Display.Views
                 Console.WriteLine("Product Managment");
                 Console.WriteLine("9. Add product");
                 Console.WriteLine("10. List all products");
+                Console.WriteLine("11. Delete product");
+                Console.WriteLine("12. Update product price");
+                Console.WriteLine("13. Add amount of a product");
+                Console.WriteLine("14. Remove amount of a product");
                 Console.Write("> ");
                 try
                 {
@@ -108,7 +112,7 @@ namespace Display.Views
                             GetAllUsers();
                             break;
                         case 2:
-                            Get();
+                            GetUser();
                             break;
                         case 3:
                             GetByApproximateName();
@@ -126,13 +130,25 @@ namespace Display.Views
                             UpdatePassword();
                             break;
                         case 8:
-                            Delete();
+                            DeleteUser();
                             break;
                         case 9:
                             AddItem();
                             break;
                         case 10:
                             GetAllItems();
+                            break;
+                        case 11:
+                            DeleteProduct();
+                            break;
+                        case 12:
+                            UpdateProductPrice();
+                            break;
+                        case 13:
+                            AddProductAmount();
+                            break;
+                        case 14:
+                            RemoveProductAmount();
                             break;
                         case 0:
                             running = false;
@@ -192,7 +208,7 @@ namespace Display.Views
         /// <summary>
         /// Lists info about a user using their ID or name from the database.
         /// </summary>
-        public void Get()
+        public void GetUser()
         {
             try
             {
@@ -379,7 +395,7 @@ namespace Display.Views
         /// <summary>
         /// Deletes a user from the database.
         /// </summary>
-        public void Delete()
+        public void DeleteUser()
         {
             try
             {
@@ -418,6 +434,159 @@ namespace Display.Views
                 Console.Write("Enter price: ");
                 double price = double.Parse(Console.ReadLine());
                 productctrl.AddItem(product, price);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Deletes a product from the database.
+        /// </summary>
+        public void DeleteProduct()
+        {
+            ProductController productctrl = new ProductController(currentUser);
+            try
+            {
+                Console.WriteLine("Delete item to database...");
+                Console.Write("Enter product ID or name: ");
+                string product = Console.ReadLine();
+                bool result = int.TryParse(product, out int productId);
+                if (result)
+                {
+                    productctrl.Delete(productId);
+                    Console.WriteLine("Deleted successfully");
+                }
+                else
+                {
+                    productctrl.Delete(product);
+                    Console.WriteLine("Deleted successfully");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates a product's price from the database.
+        /// </summary>
+        public void UpdateProductPrice()
+        {
+            ProductController productctrl = new ProductController(currentUser);
+            try
+            {
+                Console.WriteLine("Updating item in database...");
+                Console.Write("Enter product ID or name: ");
+                string product = Console.ReadLine();
+                Console.Write("Enter new price: ");
+                double price = double.Parse(Console.ReadLine());
+                bool result = int.TryParse(product, out int productId);
+                if (result)
+                {
+                    productctrl.UpdatePrice(product, price);
+                    Console.WriteLine("Deleted successfully");
+                }
+                else
+                {
+                    productctrl.UpdatePrice(productId, price);
+                    Console.WriteLine("Deleted successfully");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates a product's name from the database.
+        /// </summary>
+        public void UpdateProductName()
+        {
+            ProductController productctrl = new ProductController(currentUser);
+            try
+            {
+                Console.WriteLine("Updating item in database...");
+                Console.Write("Enter product ID or name: ");
+                string product = Console.ReadLine();
+                Console.Write("Enter new name: ");
+                string name = Console.ReadLine();
+                bool result = int.TryParse(product, out int productId);
+                if (result)
+                {
+                    productctrl.UpdateName(product, name);
+                    Console.WriteLine("Deleted successfully");
+                }
+                else
+                {
+                    productctrl.UpdateName(productId, name);
+                    Console.WriteLine("Deleted successfully");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Adds amount to a product's amount from the database.
+        /// </summary>
+        public void AddProductAmount()
+        {
+            ProductController productctrl = new ProductController(currentUser);
+            try
+            {
+                Console.WriteLine("Updating item in database...");
+                Console.Write("Enter product ID or name: ");
+                string product = Console.ReadLine();
+                Console.Write("Add amount: ");
+                double amount = double.Parse(Console.ReadLine());
+                bool result = int.TryParse(product, out int productId);
+                if (result)
+                {
+                    productctrl.AddAmount(product, amount);
+                    Console.WriteLine("Deleted successfully");
+                }
+                else
+                {
+                    productctrl.AddAmount(productId, amount);
+                    Console.WriteLine("Deleted successfully");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Removes amount to a product's amount from the database.
+        /// </summary>
+        public void RemoveProductAmount()
+        {
+            ProductController productctrl = new ProductController(currentUser);
+            try
+            {
+                Console.WriteLine("Updating item in database...");
+                Console.Write("Enter product ID or name: ");
+                string product = Console.ReadLine();
+                Console.Write("Remove amount: ");
+                double amount = double.Parse(Console.ReadLine());
+                bool result = int.TryParse(product, out int productId);
+                if (result)
+                {
+                    productctrl.RemoveAmount(product, amount);
+                    Console.WriteLine("Deleted successfully");
+                }
+                else
+                {
+                    productctrl.RemoveAmount(productId, amount);
+                    Console.WriteLine("Deleted successfully");
+                }
             }
             catch (Exception e)
             {
